@@ -25,10 +25,7 @@ const portfolioProjects = await getCollection("projects");
             class="logo-container w-inline-block"
             style="pointer-events: auto; display: flex; justify-content: center;"
         >
-            <div id="lottie-logo" style="width: 40px; height: 40px;">
-                <!-- Placeholder text; will be replaced by lottie script initialization below -->
-                I.I.
-            </div>
+            <div id="lottie-logo" style="width: 40px; height: 40px;">I.I.</div>
         </a>
 
         <a
@@ -86,7 +83,7 @@ const portfolioProjects = await getCollection("projects");
         </div>
     </section>
 
-    <!-- Persistent Dynamic Dynamic Background Wrapper -->
+    <!-- Persistent Dynamic Background Wrapper -->
     <div
         id="dynamic-bkg-container"
         style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; background-size: cover; background-position: center; background-repeat: no-repeat;"
@@ -97,6 +94,7 @@ const portfolioProjects = await getCollection("projects");
 <!-- Client-Side Automation Logic (Three.js + Scroll Interactions + Lottie) -->
 <script>
     import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
     import lottie from "lottie-web";
 
     // --- 1. Lottie Navigation Animation Hook ---
@@ -107,7 +105,7 @@ const portfolioProjects = await getCollection("projects");
             renderer: "svg",
             loop: true,
             autoplay: true,
-            path: "https://cdn.prod.website-files.com/66fb832b0b49120681541c05/670738a026c2f09fcab17aef_logo-lottie_00000.lottie",
+            path: "/assets/lottie/logo-lottie.json",
         });
     }
 
@@ -123,7 +121,10 @@ const portfolioProjects = await getCollection("projects");
         );
         camera.position.z = 5;
 
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        const renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
@@ -131,20 +132,25 @@ const portfolioProjects = await getCollection("projects");
         // Structural lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
         scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xff4d4d, 1.2); // Red specular hint
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
         directionalLight.position.set(5, 5, 5);
         scene.add(directionalLight);
 
-        // Placeholder mesh logic for the bold 3D "IKER IZA" title
-        // Note: Replace this box layout with a GLTFLoader instance once your 3D asset file is exported.
-        const geometry = new THREE.BoxGeometry(2.5, 0.8, 0.5);
-        const material = new THREE.MeshStandardMaterial({
-            color: 0x555555,
-            roughness: 0.2,
-            metalness: 0.8,
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
+        // Initializing GLTFLoader to load your local 3D Asset
+        const loader = new GLTFLoader();
+        let meshModel: THREE.Group | null = null;
+
+        loader.load(
+            "/assets/models/logo-3d.glb",
+            (gltf) => {
+                meshModel = gltf.scene;
+                scene.add(meshModel);
+            },
+            undefined,
+            (error) => {
+                console.error("Error loading 3D asset model:", error);
+            },
+        );
 
         // Mouse interaction controls
         let mouseX = 0,
@@ -157,9 +163,11 @@ const portfolioProjects = await getCollection("projects");
         const animate = () => {
             requestAnimationFrame(animate);
 
-            // Smooth damp rotation tracking the cursor coordinates
-            mesh.rotation.y += (mouseX - mesh.rotation.y) * 0.05;
-            mesh.rotation.x += (mouseY - mesh.rotation.x) * 0.05;
+            // Smooth damp rotation tracking the cursor coordinates if the mesh is loaded
+            if (meshModel) {
+                meshModel.rotation.y += (mouseX - meshModel.rotation.y) * 0.05;
+                meshModel.rotation.x += (mouseY - meshModel.rotation.x) * 0.05;
+            }
 
             renderer.render(scene, camera);
         };
@@ -177,39 +185,37 @@ const portfolioProjects = await getCollection("projects");
     const bgContainer = document.getElementById("dynamic-bkg-container");
     const projectItems = document.querySelectorAll(".project-item");
 
-    const observerOptions = {
-        root: null,
-        rootMargin: "-20% 0px -20% 0px", // Restricts intersection calculation field area to center of viewport
-        threshold: 0.4,
-    };
+    if (bgContainer && projectItems.length > 0) {
+        const observerOptions = {
+            root: null,
+            rootMargin: "-20% 0px -20% 0px", // Restricts intersection calculation field area to center of viewport
+            threshold: 0.4,
+        };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
                 const target = entry.target as HTMLElement;
                 const bgUrl = target.getAttribute("data-bg");
                 const textLink = target.querySelector(
                     ".project-nav",
                 ) as HTMLElement;
 
-                if (bgUrl && bgContainer) {
-                    bgContainer.style.backgroundImage = `url('${bgUrl}')`;
-                    bgContainer.style.opacity = "0.75";
+                if (entry.isIntersecting) {
+                    if (bgUrl) {
+                        bgContainer.style.backgroundImage = `url('${bgUrl}')`;
+                        bgContainer.style.opacity = "0.75";
+                    }
+                    if (textLink) {
+                        textLink.style.color = "#ffffff"; // Highlights target active item text element
+                    }
+                } else {
+                    if (textLink) {
+                        textLink.style.color = "#838383"; // Resets inactive item text elements
+                    }
                 }
-                if (textLink) {
-                    textLink.style.color = "#ffffff"; // Highlights target active item text element
-                }
-            } else {
-                const target = entry.target as HTMLElement;
-                const textLink = target.querySelector(
-                    ".project-nav",
-                ) as HTMLElement;
-                if (textLink) {
-                    textLink.style.color = "#838383"; // Resets inactive item text elements
-                }
-            }
-        });
-    }, observerOptions);
+            });
+        }, observerOptions);
 
-    projectItems.forEach((item) => observer.observe(item));
+        projectItems.forEach((item) => observer.observe(item));
+    }
 </script>

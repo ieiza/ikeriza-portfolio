@@ -1,0 +1,86 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+
+// 1. Generate static paths for every project inside the CMS collection
+export async function getStaticPaths() {
+    const projects = await getCollection("projects");
+    return projects.map((project) => ({
+        params: { id: project.id },
+        props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+// 2. Render the markdown body content dynamically
+const { Content } = await render(project);
+---
+
+<Layout title={`${project.data.title} | Iker Iza`}>
+    <!-- Project Navbar -->
+    <nav
+        class="navbar w-layout-hflex"
+        style="position: absolute; top: 0; left: 0; width: 100vw; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4.5rem; z-index: 1000;"
+    >
+        <a href="/" class="button w-inline-block">
+            <div class="button-label">BACK</div>
+            <div class="button-line"></div>
+        </a>
+        <div
+            class="navbar-logo"
+            style="font-family: var(--font-family--heading); font-weight: 900; font-style: italic;"
+        >
+            {project.data.client || "PROJECT"}
+        </div>
+    </nav>
+
+    <!-- Case Study Media Presentation Layer -->
+    <main
+        class="project-wrapper project"
+        style="padding-top: 8rem; min-height: 100vh; background: #000; color: #fff;"
+    >
+        <!-- Video Player Display Container -->
+        {
+            project.data.videoUrl && (
+                <section
+                    class="project-video"
+                    style="width: 100%; display: flex; justify-content: center; margin-bottom: 4rem;"
+                >
+                    <div
+                        class="video-container"
+                        style="width: 90%; max-width: 1200px; aspect-ratio: 16/9; background: #111;"
+                    >
+                        <div
+                            class="js-player"
+                            data-plyr-provider="vimeo"
+                            data-plyr-embed-id={project.data.videoUrl
+                                .split("/")
+                                .pop()}
+                        />
+                    </div>
+                </section>
+            )
+        }
+
+        <!-- Typography Content Block -->
+        <section
+            class="details-wrapper"
+            style="max-width: 800px; margin: 0 auto; padding: 0 2rem;"
+        >
+            <div class="description-container">
+                <h2
+                    style="font-size: var(--fontsize--heading-sm); margin-bottom: 2rem; color: var(--color--primary); text-transform: uppercase;"
+                >
+                    {project.data.title}
+                </h2>
+                <div
+                    class="paragraph"
+                    style="color: #ccc; line-height: 1.6; font-size: 1.1rem;"
+                >
+                    <!-- Markdown body gets compiled right here -->
+                    <Content />
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
