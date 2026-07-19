@@ -1,5 +1,5 @@
 ---
-title: "Project BB"
+title: "Entity"
 client: "BB Client Portfolio"
 category: "Design, Development"
 heroImage: "/assets/images/project-bb.webp"

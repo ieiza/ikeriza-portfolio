@@ -1,5 +1,5 @@
 ---
-title: "Brand Development & Creative Direction"
+title: "Hungry House"
 client: "CE Client Portfolio"
 category: "Strategy, Design, Operations, Management"
 heroImage: "/assets/images/project-ce.webp"
