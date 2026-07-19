@@ -63,7 +63,7 @@ const portfolioProjects = await getCollection("projects");
             style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;"
         >
             {
-                portfolioProjects.map((project, index) => (
+                portfolioProjects.map((project) => (
                     <div
                         class="title-container project-item"
                         data-bg={project.data.heroImage}
@@ -100,66 +100,78 @@ const portfolioProjects = await getCollection("projects");
     import lottie from "lottie-web";
 
     // --- 1. Lottie Navigation Animation Hook ---
-    lottie.loadAnimation({
-        container: document.getElementById("lottie-logo"),
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        path: "https://cdn.prod.website-files.com/66fb832b0b49120681541c05/670738a026c2f09fcab17aef_logo-lottie_00000.lottie",
-    });
+    const lottieContainer = document.getElementById("lottie-logo");
+    if (lottieContainer) {
+        lottie.loadAnimation({
+            container: lottieContainer,
+            renderer: "svg",
+            loop: true,
+            autoplay: true,
+            path: "https://cdn.prod.website-files.com/66fb832b0b49120681541c05/670738a026c2f09fcab17aef_logo-lottie_00000.lottie",
+        });
+    }
 
     // --- 2. Interactive Three.js 3D Title Handling ---
     const container = document.getElementById("threejs-container");
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-        45,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000,
-    );
-    camera.position.z = 5;
+    if (container) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+            45,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000,
+        );
+        camera.position.z = 5;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
 
-    // Structural lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xff4d4d, 1.2); // Red specular hint
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
+        // Structural lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xff4d4d, 1.2); // Red specular hint
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
 
-    // Placeholder mesh logic for the bold 3D "IKER IZA" title
-    // Note: Replace this box layout with a GLTFLoader instance once your 3D asset file is exported.
-    const geometry = new THREE.BoxGeometry(2.5, 0.8, 0.5);
-    const material = new THREE.MeshStandardMaterial({
-        color: 0x555555,
-        roughness: 0.2,
-        metalness: 0.8,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+        // Placeholder mesh logic for the bold 3D "IKER IZA" title
+        // Note: Replace this box layout with a GLTFLoader instance once your 3D asset file is exported.
+        const geometry = new THREE.BoxGeometry(2.5, 0.8, 0.5);
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x555555,
+            roughness: 0.2,
+            metalness: 0.8,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
 
-    // Mouse interaction controls
-    let mouseX = 0,
-        mouseY = 0;
-    window.addEventListener("mousemove", (e) => {
-        mouseX = (e.clientX - window.innerWidth / 2) / 100;
-        mouseY = (e.clientY - window.innerHeight / 2) / 100;
-    });
+        // Mouse interaction controls
+        let mouseX = 0,
+            mouseY = 0;
+        window.addEventListener("mousemove", (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) / 100;
+            mouseY = (e.clientY - window.innerHeight / 2) / 100;
+        });
 
-    function animate() {
-        requestAnimationFrame(animate);
+        const animate = () => {
+            requestAnimationFrame(animate);
 
-        // Smooth damp rotation tracking the cursor coordinates
-        mesh.rotation.y += (mouseX - mesh.rotation.y) * 0.05;
-        mesh.rotation.x += (mouseY - mesh.rotation.x) * 0.05;
+            // Smooth damp rotation tracking the cursor coordinates
+            mesh.rotation.y += (mouseX - mesh.rotation.y) * 0.05;
+            mesh.rotation.x += (mouseY - mesh.rotation.x) * 0.05;
 
-        renderer.render(scene, camera);
+            renderer.render(scene, camera);
+        };
+        animate();
+
+        // Handle window resizing safely
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     }
-    animate();
 
     // --- 3. Dynamic Area In-Viewport Scroll Background Switcher ---
     const bgContainer = document.getElementById("dynamic-bkg-container");
@@ -180,7 +192,7 @@ const portfolioProjects = await getCollection("projects");
                     ".project-nav",
                 ) as HTMLElement;
 
-                if (bgUrl) {
+                if (bgUrl && bgContainer) {
                     bgContainer.style.backgroundImage = `url('${bgUrl}')`;
                     bgContainer.style.opacity = "0.75";
                 }
@@ -200,11 +212,4 @@ const portfolioProjects = await getCollection("projects");
     }, observerOptions);
 
     projectItems.forEach((item) => observer.observe(item));
-
-    // Handle window resizing safely
-    window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
 </script>

@@ -71,9 +71,7 @@ const { title = "Iker Iza - NYC | Brand Development & Creative Direction" } =
         <script is:inline src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
         <script is:inline>
             document.addEventListener("DOMContentLoaded", () => {
-                const players = Array.from(
-                    document.querySelectorAll(".js-player"),
-                ).map((p) => new Plyr(p));
+                document.querySelectorAll(".js-player").forEach((p) => new Plyr(p));
             });
         </script>
     </body>
