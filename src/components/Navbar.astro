@@ -1,0 +1,172 @@
+---
+
+---
+
+<div class="nav-fixed-overlay">
+    <nav class="navbar-capsule">
+        <a href="/about" class="nav-button w-inline-block">
+            <span class="button-label">ABOUT</span>
+            <span class="button-line"></span>
+        </a>
+
+        <!-- Fixed Width Anchor Wrapper Layout Container -->
+        <a href="/" class="logo-link w-inline-block" id="nav-logo-trigger">
+            <div class="canvas-wrapper">
+                <canvas id="dotlottie-canvas"></canvas>
+            </div>
+        </a>
+
+        <a href="/contact" class="nav-button w-inline-block">
+            <span class="button-label">CONTACT</span>
+            <span class="button-line"></span>
+        </a>
+    </nav>
+</div>
+
+<style>
+    .nav-fixed-overlay {
+        position: fixed;
+        top: 2rem;
+        left: 0;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    .navbar-capsule {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Increased gap metrics to provide extra breathing room for the animated shape */
+        gap: 4rem;
+        padding: 0.75rem 3rem;
+        background: rgba(10, 10, 10, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-radius: 100px;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-capsule:hover {
+        background: rgba(15, 15, 15, 0.85);
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        transform: scale(1.03);
+    }
+
+    .nav-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .button-label {
+        font-family: var(--font-family--heading, sans-serif);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.45);
+        transition: color 0.3s ease;
+    }
+
+    .button-line {
+        width: 0%;
+        height: 1px;
+        background-color: #fff;
+        margin-top: 4px;
+        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .navbar-capsule:hover .button-label {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .nav-button:hover .button-label {
+        color: #ffffff !important;
+    }
+
+    .nav-button:hover .button-line {
+        width: 100%;
+    }
+
+    .logo-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.4s ease;
+    }
+
+    /* FORCED STRUCTURAL BOX LAYOUT: Expands the inner flex layout container 
+       and locks the width footprint to 60px so it cannot collapse. */
+    .canvas-wrapper {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    #dotlottie-canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+
+    .navbar-capsule:hover #dotlottie-canvas {
+        opacity: 1;
+    }
+
+    .logo-link:hover {
+        transform: scale(1.1) rotate(4deg);
+    }
+</style>
+
+<script>
+    try {
+        const canvasElement = document.getElementById(
+            "dotlottie-canvas",
+        ) as HTMLCanvasElement | null;
+        const triggerElement = document.getElementById("nav-logo-trigger");
+
+        if (canvasElement && triggerElement) {
+            canvasElement.width = 240; // High-res layout render buffers
+            canvasElement.height = 240;
+
+            const lottieCdnUrl =
+                "https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm";
+            const { DotLottie } = await import(/* @vite-ignore */ lottieCdnUrl);
+
+            const lottiePlayer = new DotLottie({
+                autoplay: false,
+                loop: false, // Turn off infinite looping
+                canvas: canvasElement,
+                path: "https://lottie.host/717c1a10-655f-4542-9ea9-987eefcebc7d/Q8znIbacTn.lottie",
+            });
+
+            // Smooth forward and reverse tracking handlers
+            triggerElement.addEventListener("mouseenter", () => {
+                lottiePlayer.setMode("forward"); // Play forward
+                lottiePlayer.play(); // Execute vector movement layers
+            });
+
+            triggerElement.addEventListener("mouseleave", () => {
+                lottiePlayer.setMode("reverse"); // Changes direction to play backward
+                lottiePlayer.play(); // Animates backward smoothly
+            });
+        }
+    } catch (e) {
+        console.error("Lottie interactive lifecycle initialization failed:", e);
+    }
+</script>

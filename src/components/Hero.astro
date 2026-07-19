@@ -1,0 +1,162 @@
+---
+
+---
+
+<section class="_3d-block">
+    <div id="threejs-container"></div>
+</section>
+
+<style>
+    ._3d-block {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 5;
+    }
+
+    #threejs-container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        background: transparent;
+    }
+</style>
+
+<script>
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+    const container = document.getElementById("threejs-container");
+    if (container) {
+        try {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(
+                45,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000,
+            );
+            camera.position.set(0, 0, 7);
+
+            const renderer = new THREE.WebGLRenderer({
+                alpha: true,
+                antialias: true,
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+
+            // Matches high-end metallic PBR material specifications
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            container.appendChild(renderer.domElement);
+
+            // Dynamic PMREM Generation (Simulates studio room environment textures)
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+
+            const envScene = new THREE.Scene();
+            const roomMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(10, 10, 10),
+                new THREE.MeshBasicMaterial({
+                    color: 0x1a1a1a,
+                    side: THREE.BackSide,
+                }),
+            );
+            envScene.add(roomMesh);
+
+            const topLight = new THREE.Mesh(
+                new THREE.SphereGeometry(2, 8, 8),
+                new THREE.MeshBasicMaterial({ color: 0xffffff }),
+            );
+            topLight.position.set(0, 4, 2);
+            envScene.add(topLight);
+
+            const envMapTarget = pmremGenerator.fromScene(envScene);
+            scene.environment = envMapTarget.texture;
+
+            // Light configuration
+            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            const loader = new GLTFLoader();
+            let meshModel: THREE.Group | null = null;
+
+            loader.load(
+                "/assets/models/logo-3d.glb",
+                (gltf) => {
+                    const model = gltf.scene;
+
+                    // Compute dimensions and offset center alignments
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.sub(center);
+
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const targetScale = 3.5 / maxDim;
+                    model.scale.set(targetScale, targetScale, targetScale);
+
+                    // Traversal mapping to assign reflective metal chrome shader properties
+                    model.traverse((child) => {
+                        if (child instanceof THREE.Mesh) {
+                            if (
+                                child.material &&
+                                child.material instanceof
+                                    THREE.MeshStandardMaterial
+                            ) {
+                                child.material.roughness = 0.12;
+                                child.material.metalness = 0.92;
+                                child.material.envMapIntensity = 2.5;
+                                child.material.needsUpdate = true;
+                            }
+                        }
+                    });
+
+                    scene.add(model);
+                    meshModel = model;
+                },
+                undefined,
+                (error) => console.error("GLTFLoader logic failed:", error),
+            );
+
+            // Mouse coordinate processing loop
+            let mouseX = 0,
+                mouseY = 0;
+            window.addEventListener("mousemove", (e) => {
+                mouseX = (e.clientX - window.innerWidth / 2) / 120;
+                mouseY = (e.clientY - window.innerHeight / 2) / 120;
+            });
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                if (meshModel) {
+                    meshModel.rotation.y +=
+                        (mouseX - meshModel.rotation.y) * 0.05;
+                    meshModel.rotation.x +=
+                        (mouseY - meshModel.rotation.x) * 0.05;
+                }
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            window.addEventListener("resize", () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        } catch (error) {
+            console.error("Three.js setup initialization crashed:", error);
+        }
+    }
+</script>

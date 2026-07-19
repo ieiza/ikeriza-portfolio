@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+const portfolioProjects = await getCollection("projects");
+---
+
+<section class="project-wrapper home">
+    <div class="project-grid _1-col">
+        {
+            portfolioProjects.map((project) => (
+                <div
+                    class="title-container project-item"
+                    data-bg={project.data.heroImage}
+                >
+                    <a href={`/projects/${project.id}`} class="w-inline-block">
+                        <h1 class="project-nav">{project.data.title}</h1>
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<style>
+    .project-wrapper {
+        position: relative;
+        z-index: 10;
+        padding: 0 4.5rem 10rem 4.5rem;
+        background: transparent;
+    }
+
+    .project-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    .title-container {
+        padding: 2rem 0;
+        text-align: center;
+        width: 100%;
+        cursor: pointer;
+        position: relative;
+        z-index: 20;
+    }
+
+    .project-nav {
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: #838383;
+        transition: color 0.3s ease;
+        font-family: var(--font-family--heading);
+        font-weight: 900;
+        line-height: 0.8em;
+        margin: 0;
+    }
+</style>
+
+<script>
+    const bgContainer = document.getElementById(
+        "dynamic-bkg-container",
+    ) as HTMLElement | null;
+    const projectItems = document.querySelectorAll(".project-item");
+
+    if (bgContainer && projectItems.length > 0) {
+        try {
+            const observerOptions = {
+                root: null,
+                rootMargin: "-20% 0px -20% 0px",
+                threshold: 0.4,
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    const target = entry.target as HTMLElement;
+                    const bgUrl = target.getAttribute("data-bg");
+                    const textLink = target.querySelector(
+                        ".project-nav",
+                    ) as HTMLElement | null;
+
+                    if (entry.isIntersecting) {
+                        if (bgUrl) {
+                            bgContainer.style.backgroundImage = `url('${bgUrl}')`;
+                            bgContainer.style.opacity = "0.75";
+                        }
+                        if (textLink) textLink.style.color = "#ffffff";
+                    } else {
+                        if (textLink) textLink.style.color = "#838383";
+                    }
+                });
+            }, observerOptions);
+
+            projectItems.forEach((item) => observer.observe(item));
+        } catch (error) {
+            console.error(
+                "Intersection Observer tracking loop crashed inside component scope:",
+                error,
+            );
+        }
+    }
+</script>

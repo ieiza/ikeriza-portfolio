@@ -1,290 +1,37 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-
-const portfolioProjects = await getCollection("projects");
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import ProjectGrid from "../components/ProjectGrid.astro";
 ---
 
 <Layout title="Iker Iza - NYC | Brand Development & Creative Direction">
-    <!-- Fixed Navbar Layout -->
-    <nav
-        class="navbar w-layout-hflex"
-        style="position: fixed; top: 0; left: 0; width: 100vw; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4.5rem; z-index: 1000; pointer-events: none;"
-    >
-        <a
-            href="/about"
-            class="button w-inline-block"
-            style="pointer-events: auto;"
-        >
-            <div class="button-label">ABOUT</div>
-            <div class="button-line"></div>
-        </a>
+    <!-- Navbar Component Block Element -->
+    <Navbar />
 
-        <a
-            href="/"
-            class="logo-container w-inline-block"
-            style="pointer-events: auto; display: flex; justify-content: center; align-items: center;"
-        >
-            <canvas id="dotlottie-canvas" style="width: 40px; height: 40px;"
-            ></canvas>
-        </a>
+    <!-- Hero Component Canvas Background Engine -->
+    <Hero />
 
-        <a
-            href="/contact"
-            class="button w-inline-block"
-            style="pointer-events: auto;"
-        >
-            <div class="button-label">CONTACT</div>
-            <div class="button-line"></div>
-        </a>
-    </nav>
+    <!-- Interactive Portfolio Collection Mapping List Grid Element -->
+    <ProjectGrid />
 
-    <!-- Hero Container holding the 3D Render Canvas -->
-    <section
-        class="_3d-block"
-        style="position: relative; width: 100vw; height: 100vh; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; z-index: 5;"
-    >
-        <div
-            id="threejs-container"
-            style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5; background: transparent;"
-        >
-        </div>
-    </section>
-
-    <!-- Interactive Scroll List Section -->
-    <section
-        class="project-wrapper home"
-        style="position: relative; z-index: 10; padding: 0 4.5rem 10rem 4.5rem; background: transparent;"
-    >
-        <div
-            class="project-grid _1-col"
-            style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;"
-        >
-            {
-                portfolioProjects.map((project) => (
-                    <div
-                        class="title-container project-item"
-                        data-bg={project.data.heroImage}
-                        style="padding: 2rem 0; text-align: center; width: 100%; cursor: pointer; position: relative; z-index: 20;"
-                    >
-                        <a
-                            href={`/projects/${project.id}`}
-                            class="w-inline-block"
-                        >
-                            <h1
-                                class="project-nav"
-                                style="font-size: 10vw; text-transform: uppercase; color: #838383; transition: color 0.3s ease; font-family: var(--font-family--heading); font-weight: 900; line-height: 0.8em; margin: 0;"
-                            >
-                                {project.data.title}
-                            </h1>
-                        </a>
-                    </div>
-                ))
-            }
-        </div>
-    </section>
-
-    <!-- Persistent Dynamic Dynamic Background Wrapper -->
-    <div
-        id="dynamic-bkg-container"
-        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; background-size: cover; background-position: center; background-repeat: no-repeat;"
-    >
-    </div>
+    <!-- Persistent Shared Background Wrapper Backdrop Node Layer -->
+    <div id="dynamic-bkg-container"></div>
 </Layout>
 
-<!-- Client-Side Automation Logic (Three.js + Scroll Interactions + dotLottie) -->
-<script>
-    import * as THREE from "three";
-    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-    // --- 1. CDN-Backed dotLottie Player Initialization ---
-    try {
-        const canvasElement = document.getElementById(
-            "dotlottie-canvas",
-        ) as HTMLCanvasElement | null;
-        if (canvasElement) {
-            // Explicitly set the canvas width and height attributes for the high-res render engine
-            canvasElement.width = 80;
-            canvasElement.height = 80;
-
-            const { DotLottie } =
-                await import("https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm");
-
-            const lottiePlayer = new DotLottie({
-                autoplay: true,
-                loop: true,
-                canvas: canvasElement,
-                path: "/assets/lottie/logo-lottie.lottie",
-            });
-
-            lottiePlayer.addEventListener("ready", () => {
-                console.log(
-                    "🟢 Live Browser Log: dotLottie asset parsed and animation rendering!",
-                );
-            });
-        }
-    } catch (error) {
-        console.error(
-            "🔴 Live Browser Log: dotLottie initialization failed:",
-            error,
-        );
+<style>
+    #dynamic-bkg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
-
-    // --- 2. Automated Auto-Scaling Three.js Environment ---
-    const container = document.getElementById("threejs-container");
-    if (container) {
-        try {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(
-                45,
-                window.innerWidth / window.innerHeight,
-                0.1,
-                1000,
-            );
-            camera.position.set(0, 0, 6); // Brought closer for better initial focus visibility
-
-            const renderer = new THREE.WebGLRenderer({
-                alpha: true,
-                antialias: true,
-            });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.shadowMap.enabled = true;
-            container.appendChild(renderer.domElement);
-
-            // Bright Ambient Lighting to combat pitch black reflections
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
-            scene.add(ambientLight);
-
-            const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
-            keyLight.position.set(5, 5, 5);
-            scene.add(keyLight);
-
-            // Loading GLTF model with auto-scaling metrics
-            const loader = new GLTFLoader();
-            let meshModel: THREE.Group | null = null;
-
-            loader.load(
-                "/assets/models/logo-3d.glb",
-                (gltf) => {
-                    meshModel = gltf.scene;
-
-                    // Automated Bounding-Box auto scaler
-                    const box = new THREE.Box3().setFromObject(meshModel);
-                    const size = box.getSize(new THREE.Vector3());
-                    const center = box.getCenter(new THREE.Vector3());
-
-                    // Normalize position offsets
-                    meshModel.position.sub(center);
-
-                    // Restructure scale safely relative to view width metrics
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const targetScale = 3.5 / maxDim;
-                    meshModel.scale.set(targetScale, targetScale, targetScale);
-
-                    // FORCE FLAT COLOR MATTE: This temporarily overwrites dark metallic materials
-                    // to ensure the 3D logo is completely visible against the black background.
-                    meshModel.traverse((child) => {
-                        if ((child as THREE.Mesh).isMesh) {
-                            const mesh = child as THREE.Mesh;
-                            mesh.material = new THREE.MeshBasicMaterial({
-                                color: 0xcccccc,
-                                side: THREE.DoubleSide,
-                            });
-                        }
-                    });
-
-                    scene.add(meshModel);
-                    console.log(
-                        "🟢 Live Browser Log: 3D Logo file read, auto-scaled, and mounted into scene.",
-                    );
-                },
-                (xhr) => {
-                    if (xhr.total > 0) {
-                        console.log(
-                            `3D Model Downloading: ${((xhr.loaded / xhr.total) * 100).toFixed(0)}%`,
-                        );
-                    }
-                },
-                (error) => {
-                    console.error(
-                        "🔴 Live Browser Log: GLTFLoader failed to parse file paths:",
-                        error,
-                    );
-                },
-            );
-
-            // Cursor movement handling
-            let mouseX = 0,
-                mouseY = 0;
-            window.addEventListener("mousemove", (e) => {
-                mouseX = (e.clientX - window.innerWidth / 2) / 120;
-                mouseY = (e.clientY - window.innerHeight / 2) / 120;
-            });
-
-            const animate = () => {
-                requestAnimationFrame(animate);
-
-                if (meshModel) {
-                    meshModel.rotation.y +=
-                        (mouseX - meshModel.rotation.y) * 0.05;
-                    meshModel.rotation.x +=
-                        (mouseY - meshModel.rotation.x) * 0.05;
-                }
-
-                renderer.render(scene, camera);
-            };
-            animate();
-
-            window.addEventListener("resize", () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        } catch (error) {
-            console.error("Three.js runtime failed:", error);
-        }
-    }
-
-    // --- 3. Viewport Scroll Background Switcher ---
-    const bgContainer = document.getElementById("dynamic-bkg-container");
-    const projectItems = document.querySelectorAll(".project-item");
-
-    if (bgContainer && projectItems.length > 0) {
-        try {
-            const observerOptions = {
-                root: null,
-                rootMargin: "-20% 0px -20% 0px",
-                threshold: 0.4,
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    const target = entry.target as HTMLElement;
-                    const bgUrl = target.getAttribute("data-bg");
-                    const textLink = target.querySelector(
-                        ".project-nav",
-                    ) as HTMLElement;
-
-                    if (entry.isIntersecting) {
-                        if (bgUrl) {
-                            bgContainer.style.backgroundImage = `url('${bgUrl}')`;
-                            bgContainer.style.opacity = "0.75";
-                        }
-                        if (textLink) {
-                            textLink.style.color = "#ffffff";
-                        }
-                    } else {
-                        if (textLink) {
-                            textLink.style.color = "#838383";
-                        }
-                    }
-                });
-            }, observerOptions);
-
-            projectItems.forEach((item) => observer.observe(item));
-        } catch (error) {
-            console.error("Intersection Observer failed:", error);
-        }
-    }
-</script>
+</style>
