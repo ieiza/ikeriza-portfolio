@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+// 1. Automatically fetch all markdown project case studies from your CMS folder
+const portfolioProjects = await getCollection("projects");
+---
+
+<Layout
+    title="Iker Iza - NYC | Brand Development & Creative Direction: Strategy, Design, Operations, Management"
+>
+    <!-- Navbar Structure -->
+    <nav
+        class="w-layout-hflex navbar"
+        style="transform: translate3d(0vh, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
+    >
+        <a href="/about" class="button w-inline-block">
+            <div class="button-label">About</div>
+            <div class="button-line" style="width: 0%;"></div>
+        </a>
+        <a
+            href="/"
+            aria-current="page"
+            class="logo-container w-inline-block w--current"
+        >
+            <!-- In place of the raw Lottie vector injection, we keep your brand identity anchor safe -->
+            <div
+                class="navbar-logo font-family: var(--font-family--heading); font-weight: 900; font-style: italic;"
+            >
+                IKER IZA
+            </div>
+        </a>
+    </nav>
+
+    <!-- Main Home Portfolio Loop Wrapper -->
+    <main class="project-wrapper home">
+        <section class="home-hero">
+            <div class="project-grid _1-col">
+                {
+                    portfolioProjects.map((project) => (
+                        <div
+                            class="title-container"
+                            data-layout={project.data.layoutClass}
+                        >
+                            <a
+                                href={`/projects/${project.id}`}
+                                class="w-inline-block"
+                            >
+                                <h1 class="project-nav">
+                                    {project.data.title}
+                                </h1>
+                            </a>
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
+
+        <!-- Background Engine Layer -->
+        <div class="bkg-image-container">
+            <div class="hero-bkg">
+                <!-- Main Ambient Video Loop Handling -->
+                <video
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    class="hero-video fr"
+                    poster="/assets/images/fallback-poster.jpg"
+                >
+                    <source
+                        src="https://cdn.prod.website-files.com/66fb832b0b49120681541c05/67073c6828b8cf4c803eeec0_EN-Display-Hor-Double-01-transcode.mp4"
+                        type="video/mp4"
+                    />
+                    <source
+                        src="https://cdn.prod.website-files.com/66fb832b0b49120681541c05/67073c6828b8cf4c803eeec0_EN-Display-Hor-Double-01-transcode.webm"
+                        type="video/webm"
+                    />
+                </video>
+            </div>
+        </div>
+    </main>
+</Layout>

@@ -1,12 +1,10 @@
 ---
 title: "Brand Development & Creative Direction"
-slug: "project-ce"
-client: "CE Client"
-category: "CPG & Branding"
+client: "CE Client Portfolio"
+category: "Strategy, Design, Operations, Management"
 heroImage: "/assets/images/project-ce.webp"
-videoUrl: "https://vimeo.com/... "
+videoUrl: "https://vimeo.com/your-video-id"
 layoutClass: "ce"
 ---
 
-This is where your case study description goes. You can write standard text here, 
-and it will dynamically render inside your framework layout template!
+Your absolute dynamic project case study layout markdown values go right here!
