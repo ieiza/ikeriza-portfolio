@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-// 1. Automatically fetch all markdown project case studies from your CMS folder
+// Fetch all markdown project case studies from your CMS folder
 const portfolioProjects = await getCollection("projects");
 ---
 
@@ -23,9 +23,9 @@ const portfolioProjects = await getCollection("projects");
             aria-current="page"
             class="logo-container w-inline-block w--current"
         >
-            <!-- In place of the raw Lottie vector injection, we keep your brand identity anchor safe -->
             <div
-                class="navbar-logo font-family: var(--font-family--heading); font-weight: 900; font-style: italic;"
+                class="navbar-logo"
+                style="font-family: var(--font-family--heading); font-weight: 900; font-style: italic;"
             >
                 IKER IZA
             </div>
