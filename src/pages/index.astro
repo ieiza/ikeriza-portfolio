@@ -2,82 +2,209 @@
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-// Fetch all markdown project case studies from your CMS folder
 const portfolioProjects = await getCollection("projects");
 ---
 
-<Layout
-    title="Iker Iza - NYC | Brand Development & Creative Direction: Strategy, Design, Operations, Management"
->
-    <!-- Navbar Structure -->
+<Layout title="Iker Iza - NYC | Brand Development & Creative Direction">
+    <!-- Fixed Navbar Layout -->
     <nav
-        class="w-layout-hflex navbar"
-        style="transform: translate3d(0vh, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
+        class="navbar w-layout-hflex"
+        style="position: fixed; top: 0; left: 0; width: 100vw; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4.5rem; z-index: 1000; pointer-events: none;"
     >
-        <a href="/about" class="button w-inline-block">
-            <div class="button-label">About</div>
-            <div class="button-line" style="width: 0%;"></div>
+        <a
+            href="/about"
+            class="button w-inline-block"
+            style="pointer-events: auto;"
+        >
+            <div class="button-label">ABOUT</div>
+            <div class="button-line"></div>
         </a>
+
         <a
             href="/"
-            aria-current="page"
-            class="logo-container w-inline-block w--current"
+            class="logo-container w-inline-block"
+            style="pointer-events: auto; display: flex; justify-content: center;"
         >
-            <div
-                class="navbar-logo"
-                style="font-family: var(--font-family--heading); font-weight: 900; font-style: italic;"
-            >
-                IKER IZA
+            <div id="lottie-logo" style="width: 40px; height: 40px;">
+                <!-- Placeholder text; will be replaced by lottie script initialization below -->
+                I.I.
             </div>
+        </a>
+
+        <a
+            href="/contact"
+            class="button w-inline-block"
+            style="pointer-events: auto;"
+        >
+            <div class="button-label">CONTACT</div>
+            <div class="button-line"></div>
         </a>
     </nav>
 
-    <!-- Main Home Portfolio Loop Wrapper -->
-    <main class="project-wrapper home">
-        <section class="home-hero">
-            <div class="project-grid _1-col">
-                {
-                    portfolioProjects.map((project) => (
-                        <div
-                            class="title-container"
-                            data-layout={project.data.layoutClass}
-                        >
-                            <a
-                                href={`/projects/${project.id}`}
-                                class="w-inline-block"
-                            >
-                                <h1 class="project-nav">
-                                    {project.data.title}
-                                </h1>
-                            </a>
-                        </div>
-                    ))
-                }
-            </div>
-        </section>
-
-        <!-- Background Engine Layer -->
-        <div class="bkg-image-container">
-            <div class="hero-bkg">
-                <!-- Main Ambient Video Loop Handling -->
-                <video
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    class="hero-video fr"
-                    poster="/assets/images/fallback-poster.jpg"
-                >
-                    <source
-                        src="https://cdn.prod.website-files.com/66fb832b0b49120681541c05/67073c6828b8cf4c803eeec0_EN-Display-Hor-Double-01-transcode.mp4"
-                        type="video/mp4"
-                    />
-                    <source
-                        src="https://cdn.prod.website-files.com/66fb832b0b49120681541c05/67073c6828b8cf4c803eeec0_EN-Display-Hor-Double-01-transcode.webm"
-                        type="video/webm"
-                    />
-                </video>
-            </div>
+    <!-- Hero Container holding the 3D Render Canvas -->
+    <section
+        class="_3d-block"
+        style="position: relative; width: 100vw; height: 100vh; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center;"
+    >
+        <div
+            id="threejs-container"
+            style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5;"
+        >
         </div>
-    </main>
+    </section>
+
+    <!-- Interactive Scroll List Section -->
+    <section
+        class="project-wrapper home"
+        style="position: relative; z-index: 10; padding: 0 4.5rem 10rem 4.5rem; background: transparent;"
+    >
+        <div
+            class="project-grid _1-col"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;"
+        >
+            {
+                portfolioProjects.map((project, index) => (
+                    <div
+                        class="title-container project-item"
+                        data-bg={project.data.heroImage}
+                        style="padding: 2rem 0; text-align: center; width: 100%; cursor: pointer; position: relative; z-index: 20;"
+                    >
+                        <a
+                            href={`/projects/${project.id}`}
+                            class="w-inline-block"
+                        >
+                            <h1
+                                class="project-nav"
+                                style="font-size: 10vw; text-transform: uppercase; color: #838383; transition: color 0.3s ease; font-family: var(--font-family--heading); font-weight: 900; line-height: 0.8em; margin: 0;"
+                            >
+                                {project.data.title}
+                            </h1>
+                        </a>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- Persistent Dynamic Dynamic Background Wrapper -->
+    <div
+        id="dynamic-bkg-container"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; background-size: cover; background-position: center; background-repeat: no-repeat;"
+    >
+    </div>
 </Layout>
+
+<!-- Client-Side Automation Logic (Three.js + Scroll Interactions + Lottie) -->
+<script>
+    import * as THREE from "three";
+    import lottie from "lottie-web";
+
+    // --- 1. Lottie Navigation Animation Hook ---
+    lottie.loadAnimation({
+        container: document.getElementById("lottie-logo"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "https://cdn.prod.website-files.com/66fb832b0b49120681541c05/670738a026c2f09fcab17aef_logo-lottie_00000.lottie",
+    });
+
+    // --- 2. Interactive Three.js 3D Title Handling ---
+    const container = document.getElementById("threejs-container");
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000,
+    );
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Structural lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xff4d4d, 1.2); // Red specular hint
+    directionalLight.position.set(5, 5, 5);
+    scene.add(directionalLight);
+
+    // Placeholder mesh logic for the bold 3D "IKER IZA" title
+    // Note: Replace this box layout with a GLTFLoader instance once your 3D asset file is exported.
+    const geometry = new THREE.BoxGeometry(2.5, 0.8, 0.5);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x555555,
+        roughness: 0.2,
+        metalness: 0.8,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Mouse interaction controls
+    let mouseX = 0,
+        mouseY = 0;
+    window.addEventListener("mousemove", (e) => {
+        mouseX = (e.clientX - window.innerWidth / 2) / 100;
+        mouseY = (e.clientY - window.innerHeight / 2) / 100;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Smooth damp rotation tracking the cursor coordinates
+        mesh.rotation.y += (mouseX - mesh.rotation.y) * 0.05;
+        mesh.rotation.x += (mouseY - mesh.rotation.x) * 0.05;
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // --- 3. Dynamic Area In-Viewport Scroll Background Switcher ---
+    const bgContainer = document.getElementById("dynamic-bkg-container");
+    const projectItems = document.querySelectorAll(".project-item");
+
+    const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -20% 0px", // Restricts intersection calculation field area to center of viewport
+        threshold: 0.4,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const target = entry.target as HTMLElement;
+                const bgUrl = target.getAttribute("data-bg");
+                const textLink = target.querySelector(
+                    ".project-nav",
+                ) as HTMLElement;
+
+                if (bgUrl) {
+                    bgContainer.style.backgroundImage = `url('${bgUrl}')`;
+                    bgContainer.style.opacity = "0.75";
+                }
+                if (textLink) {
+                    textLink.style.color = "#ffffff"; // Highlights target active item text element
+                }
+            } else {
+                const target = entry.target as HTMLElement;
+                const textLink = target.querySelector(
+                    ".project-nav",
+                ) as HTMLElement;
+                if (textLink) {
+                    textLink.style.color = "#838383"; // Resets inactive item text elements
+                }
+            }
+        });
+    }, observerOptions);
+
+    projectItems.forEach((item) => observer.observe(item));
+
+    // Handle window resizing safely
+    window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
