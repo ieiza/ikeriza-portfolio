@@ -41,7 +41,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Increased gap metrics to provide extra breathing room for the animated shape */
         gap: 4rem;
         padding: 0.75rem 3rem;
         background: rgba(10, 10, 10, 0.3);
@@ -100,20 +99,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.4s ease;
+        text-decoration: none;
     }
 
-    /* FORCED STRUCTURAL BOX LAYOUT: Expands the inner flex layout container 
-       and locks the width footprint to 60px so it cannot collapse. */
+    /* Adjusted container parameters to scale up the horizontal space 
+       while preventing the height from bloating the main navigation capsule layout */
     .canvas-wrapper {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
-        min-height: 60px;
+        width: 120px;
+        height: 44px;
+        min-width: 120px;
+        min-height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        overflow: hidden;
     }
 
     #dotlottie-canvas {
@@ -122,6 +122,10 @@
         display: block;
         opacity: 0.7;
         transition: opacity 0.3s ease;
+
+        /* FIXES ASPECT DISTORTION: Ensures the internal canvas artwork maintains 
+           its exact proportional bounding box without stretching, regardless of its layout container frame */
+        object-fit: contain;
     }
 
     .navbar-capsule:hover #dotlottie-canvas {
@@ -129,7 +133,7 @@
     }
 
     .logo-link:hover {
-        transform: scale(1.1) rotate(4deg);
+        transform: scale(1.05);
     }
 </style>
 
@@ -141,8 +145,13 @@
         const triggerElement = document.getElementById("nav-logo-trigger");
 
         if (canvasElement && triggerElement) {
-            canvasElement.width = 240; // High-res layout render buffers
-            canvasElement.height = 240;
+            // High-DPI canvas render buffer calculations
+            const pixelRatio = window.devicePixelRatio || 1;
+            const containerWidth = 120;
+            const containerHeight = 44;
+
+            canvasElement.width = containerWidth * pixelRatio;
+            canvasElement.height = containerHeight * pixelRatio;
 
             const lottieCdnUrl =
                 "https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm";
@@ -150,23 +159,31 @@
 
             const lottiePlayer = new DotLottie({
                 autoplay: false,
-                loop: false, // Turn off infinite looping
+                loop: false,
                 canvas: canvasElement,
-                path: "https://lottie.host/717c1a10-655f-4542-9ea9-987eefcebc7d/Q8znIbacTn.lottie",
+                src: "https://lottie.host/717c1a10-655f-4542-9ea9-987eefcebc7d/Q8znIbacTn.lottie",
             });
 
-            // Smooth forward and reverse tracking handlers
+            // Set the configuration mode to a standard forward progression
+            lottiePlayer.setMode("forward");
+
             triggerElement.addEventListener("mouseenter", () => {
-                lottiePlayer.setMode("forward"); // Play forward
-                lottiePlayer.play(); // Execute vector movement layers
+                // 1. Lock the playback boundaries to the first half (frames 0 to 30)
+                lottiePlayer.setSegment(0, 30);
+
+                // 2. Play the intro sequence. It will naturally hold at frame 30
+                lottiePlayer.play();
             });
 
             triggerElement.addEventListener("mouseleave", () => {
-                lottiePlayer.setMode("reverse"); // Changes direction to play backward
-                lottiePlayer.play(); // Animates backward smoothly
+                // 3. Update the boundaries to the second half (frames 30 to 60)
+                lottiePlayer.setSegment(30, 60);
+
+                // 4. Play the outro sequence to seamlessly finish the animation cycle
+                lottiePlayer.play();
             });
         }
     } catch (e) {
-        console.error("Lottie interactive lifecycle initialization failed:", e);
+        console.error("Lottie segmented logic failed:", e);
     }
 </script>

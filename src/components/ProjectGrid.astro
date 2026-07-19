@@ -24,7 +24,8 @@ const portfolioProjects = await getCollection("projects");
     .project-wrapper {
         position: relative;
         z-index: 10;
-        padding: 0 4.5rem 10rem 4.5rem;
+        /* Using 50vh to center, but horizontal margins map to your system tokens */
+        padding: 50vh var(--body--padding);
         background: transparent;
     }
 
@@ -33,11 +34,13 @@ const portfolioProjects = await getCollection("projects");
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
+        gap: var(--scale--0); /* Tied to system zero scale */
     }
 
     .title-container {
-        padding: 2rem 0;
+        padding: var(
+            --scale--0
+        ); /* Crushed padding completely using design token */
         text-align: center;
         width: 100%;
         cursor: pointer;
@@ -46,14 +49,19 @@ const portfolioProjects = await getCollection("projects");
     }
 
     .project-nav {
-        font-size: 10vw;
+        font-size: var(
+            --fontsize--heading-lg
+        ); /* Connected directly to token (14vw) */
         text-transform: uppercase;
-        color: #838383;
-        transition: color 0.3s ease;
+        color: var(
+            --opacity--white
+        ); /* Sets 15% opacity baseline directly via token */
+        transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         font-family: var(--font-family--heading);
         font-weight: 900;
-        line-height: 0.8em;
-        margin: 0;
+        line-height: var(--line-height--heading-lg); /* Maps to .785em */
+        letter-spacing: var(--letter-space--heading-lg); /* Maps to -.015em */
+        margin: var(--scale--0);
     }
 </style>
 
@@ -67,9 +75,11 @@ const portfolioProjects = await getCollection("projects");
         try {
             const observerOptions = {
                 root: null,
-                rootMargin: "-20% 0px -20% 0px",
-                threshold: 0.4,
+                rootMargin: "-40% 0px -40% 0px",
+                threshold: 0.1,
             };
+
+            let currentlyActiveItem: HTMLElement | null = null;
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
@@ -80,23 +90,29 @@ const portfolioProjects = await getCollection("projects");
                     ) as HTMLElement | null;
 
                     if (entry.isIntersecting) {
+                        currentlyActiveItem = target;
+
                         if (bgUrl) {
                             bgContainer.style.backgroundImage = `url('${bgUrl}')`;
-                            bgContainer.style.opacity = "0.75";
+                            bgContainer.style.opacity = "0.45";
                         }
-                        if (textLink) textLink.style.color = "#ffffff";
+                        if (textLink)
+                            textLink.style.color = "var(--swatches--white)"; // Fades up to solid white token
                     } else {
-                        if (textLink) textLink.style.color = "#838383";
+                        if (textLink)
+                            textLink.style.color = "var(--opacity--white)"; // FIXED: Now cleanly falls back to 15% opacity design variable
+
+                        if (currentlyActiveItem === target) {
+                            bgContainer.style.opacity = "0";
+                            currentlyActiveItem = null;
+                        }
                     }
                 });
             }, observerOptions);
 
             projectItems.forEach((item) => observer.observe(item));
         } catch (error) {
-            console.error(
-                "Intersection Observer tracking loop crashed inside component scope:",
-                error,
-            );
+            console.error("Intersection Observer loop crashed:", error);
         }
     }
 </script>
