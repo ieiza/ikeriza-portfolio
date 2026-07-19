@@ -1,86 +1,412 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
+import Navbar from "../../components/Navbar.astro";
 
-// 1. Generate static paths for every project inside the CMS collection
 export async function getStaticPaths() {
-    const projects = await getCollection("projects");
-    return projects.map((project) => ({
-        params: { id: project.id },
-        props: { project },
+    const projectEntries = await getCollection("projects");
+    return projectEntries.map((entry) => ({
+        params: { id: entry.id },
+        props: { entry },
     }));
 }
 
-const { project } = Astro.props;
-// 2. Render the markdown body content dynamically
-const { Content } = await render(project);
+const { entry } = Astro.props;
+const { title, heroImage, mediaGrid } = entry.data;
+
+const currentGrid = mediaGrid || [
+    { type: "image", src: heroImage, span: 2 },
+    { type: "placeholder", title: "PROCESS ARTIFACT", span: 2 },
+    { type: "image", src: heroImage, span: 1 },
+];
 ---
 
-<Layout title={`${project.data.title} | Iker Iza`}>
-    <!-- Project Navbar -->
-    <nav
-        class="navbar w-layout-hflex"
-        style="position: absolute; top: 0; left: 0; width: 100vw; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4.5rem; z-index: 1000;"
-    >
-        <a href="/" class="button w-inline-block">
-            <div class="button-label">BACK</div>
-            <div class="button-line"></div>
-        </a>
-        <div
-            class="navbar-logo"
-            style="font-family: var(--font-family--heading); font-weight: 900; font-style: italic;"
-        >
-            {project.data.client || "PROJECT"}
-        </div>
-    </nav>
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title} — Portfolio</title>
 
-    <!-- Case Study Media Presentation Layer -->
-    <main
-        class="project-wrapper project"
-        style="padding-top: 8rem; min-height: 100vh; background: #000; color: #fff;"
-    >
-        <!-- Video Player Display Container -->
-        {
-            project.data.videoUrl && (
-                <section
-                    class="project-video"
-                    style="width: 100%; display: flex; justify-content: center; margin-bottom: 4rem;"
-                >
-                    <div
-                        class="video-container"
-                        style="width: 90%; max-width: 1200px; aspect-ratio: 16/9; background: #111;"
-                    >
-                        <div
-                            class="js-player"
-                            data-plyr-provider="vimeo"
-                            data-plyr-embed-id={project.data.videoUrl
-                                .split("/")
-                                .pop()}
-                        />
-                    </div>
-                </section>
-            )
-        }
+        <!-- Adobe Typekit Font Sync -->
+        <link rel="stylesheet" href="https://use.typekit.net/lmi7yvo.css" />
 
-        <!-- Typography Content Block -->
-        <section
-            class="details-wrapper"
-            style="max-width: 800px; margin: 0 auto; padding: 0 2rem;"
-        >
-            <div class="description-container">
-                <h2
-                    style="font-size: var(--fontsize--heading-sm); margin-bottom: 2rem; color: var(--color--primary); text-transform: uppercase;"
-                >
-                    {project.data.title}
-                </h2>
-                <div
-                    class="paragraph"
-                    style="color: #ccc; line-height: 1.6; font-size: 1.1rem;"
-                >
-                    <!-- Markdown body gets compiled right here -->
-                    <Content />
+        <!-- Global CSS links mapped directly from static public endpoints -->
+        <link rel="stylesheet" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/plyr.css" />
+    </head>
+    <body class="body">
+        <Navbar />
+
+        <main class="project-main-viewport">
+            <!-- Section 1: Hero Block Header -->
+            <header class="project-hero-header">
+                <div class="hero-bkg-image-frame">
+                    <img
+                        src={heroImage}
+                        alt={`${title} Landscape Backdrop`}
+                        class="hero-cover-src"
+                    />
                 </div>
-            </div>
-        </section>
-    </main>
-</Layout>
+                <div class="hero-title-overlay">
+                    <h1 class="h1-global-title hero-dynamic-title">
+                        {title}
+                    </h1>
+                </div>
+            </header>
+
+            <!-- Section 2: Dynamic Media Matrix Grid Module -->
+            <section class="project-wrapper project">
+                <div class="adaptive-media-grid">
+                    {
+                        currentGrid.map((item) => (
+                            <div
+                                class={`visual-container grid-span-${item.span}`}
+                            >
+                                {item.type === "image" && (
+                                    <img
+                                        src={item.src}
+                                        alt="Project Visual Content"
+                                        class="image bkg"
+                                        loading="lazy"
+                                    />
+                                )}
+                                {item.type === "video" && (
+                                    <video
+                                        autoplay
+                                        loop
+                                        muted
+                                        playsinline
+                                        class="video bkg"
+                                    >
+                                        <source
+                                            src={item.src}
+                                            type="video/mp4"
+                                        />
+                                    </video>
+                                )}
+                                {item.type === "placeholder" && (
+                                    <div class="div-block dark-room-fallback">
+                                        <span class="button-label visual-badge-branding">
+                                            {item.title}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    }
+                </div>
+            </section>
+
+            <!-- Section 3: Split Detailed Credits & Descriptive Copy Grid -->
+            <section class="details-wrapper">
+                <div class="credits-container">
+                    <h3 class="p-heading project-meta-label">
+                        Project Credits
+                    </h3>
+                    <div class="project-meta-item">
+                        <span class="button-label">Client / Context</span>
+                        <p class="paragraph">
+                            {entry.data.client || "Independent Exploration"}
+                        </p>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="button-label">Role / Scope</span>
+                        <p class="paragraph">
+                            {entry.data.role || "Design & Development"}
+                        </p>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="button-label">Timeline</span>
+                        <p class="paragraph">
+                            {entry.data.date || "2026 Build"}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="description-container">
+                    <h3 class="p-heading project-meta-label">Overview</h3>
+                    <p class="paragraph about">
+                        {
+                            entry.data.description ||
+                                "Transformative visual solutions designed around functional application frameworks, architectural spacing models, and strict system-driven parameter sets."
+                        }
+                    </p>
+                    {
+                        entry.data.links && (
+                            <div class="project-links-group">
+                                {entry.data.links.map((link) => (
+                                    <a
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="project-anchor-link"
+                                    >
+                                        {link.label} ↗
+                                    </a>
+                                ))}
+                            </div>
+                        )
+                    }
+                </div>
+            </section>
+
+            <!-- Section 4: Return Interface Anchor Footer -->
+            <footer class="project-nav-footer-nav">
+                <a href="/" class="project-nav w-inline-block">
+                    <span class="button-label">RETURN TO MATRIX</span>
+                    <h2 class="h1-global-title back-matrix-label">INDEX</h2>
+                </a>
+            </footer>
+        </main>
+    </body>
+</html>
+
+<style>
+    /* Viewport Framework Spacing Layout */
+    .project-main-viewport {
+        width: 100%;
+        overflow-x: hidden;
+        background-color: var(--swatches--black);
+    }
+
+    /* Full-bleed Header Block Styling */
+    .project-hero-header {
+        position: relative;
+        width: 100%;
+        height: 100dvh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        margin: var(--scale--0);
+    }
+
+    .hero-bkg-image-frame {
+        position: absolute;
+        inset: var(--scale--0);
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .hero-cover-src {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.65;
+    }
+
+    .hero-title-overlay {
+        position: absolute;
+        z-index: 2;
+        padding: var(--scale--0) var(--scale--24);
+        text-align: center;
+        max-width: 90vw;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Local over-rides for sizing scales */
+    .hero-dynamic-title {
+        font-family: obviously-wide, sans-serif !important;
+        font-weight: 900 !important;
+        font-style: normal !important;
+        text-transform: uppercase !important;
+        font-size: var(--fontsize--heading-lg) !important;
+        line-height: var(--line-height--heading-lg) !important;
+        letter-spacing: var(--letter-space--heading-lg) !important;
+        color: var(--swatches--white) !important;
+        -webkit-text-fill-color: var(--swatches--white) !important;
+    }
+
+    /* Adaptive Media Base Grid System */
+    .project-wrapper.project {
+        padding: var(--scale--12) var(--scale--0) var(--scale--0)
+            var(--scale--0);
+    }
+
+    .adaptive-media-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: var(--scale--12);
+        width: 100%;
+    }
+
+    .visual-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--scale--0);
+        border: 0px solid rgba(255, 255, 255, 0.03);
+        min-height: 35vw;
+    }
+
+    /* Span mapping calculations for rows containing 1, 2, 3, or 4 columns */
+    .grid-span-1 {
+        grid-column: span 12;
+        max-height: 95dvh;
+    }
+    .grid-span-2 {
+        grid-column: span 6;
+        max-height: 65dvh;
+    }
+    .grid-span-3 {
+        grid-column: span 4;
+        max-height: 45dvh;
+    }
+    .grid-span-4 {
+        grid-column: span 3;
+        max-height: 45dvh;
+    }
+
+    .image.bkg,
+    .video.bkg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .dark-room-fallback {
+        width: 100%;
+        height: 100%;
+        background-color: var(--swatches--800);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .visual-badge-branding {
+        color: var(--opacity--white);
+        letter-spacing: var(--letter-space--button);
+    }
+
+    /* Details Grid and Links Blocks */
+    .details-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: var(--scale--64);
+        padding: var(--scale--168) var(--scale--72);
+        background-color: var(--swatches--black);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .credits-container {
+        flex: 0 0 35%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--scale--24);
+    }
+
+    .description-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--scale--24);
+    }
+
+    .project-meta-label {
+        font-size: var(--fontsize--heading-sm);
+        color: var(--color--brand);
+        text-transform: uppercase;
+        margin-bottom: var(--scale--16);
+    }
+
+    .project-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--scale--4);
+    }
+
+    .paragraph.about {
+        column-count: 2;
+        column-gap: var(--scale--48);
+        text-align: justify;
+    }
+
+    .project-links-group {
+        display: flex;
+        gap: var(--scale--24);
+        margin-top: var(--scale--16);
+    }
+
+    .project-anchor-link {
+        color: var(--swatches--white);
+        text-decoration: underline;
+        font-size: var(--fontsize--paragraph);
+        transition: color 0.3s ease;
+    }
+
+    .project-anchor-link:hover {
+        color: var(--color--brand);
+    }
+
+    /* Footer Navigation Styling Blocks */
+    .project-nav-footer-nav {
+        padding: var(--scale--168) var(--scale--0);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+    }
+
+    .project-nav {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .back-matrix-label {
+        color: var(--opacity--white);
+        transition: color 0.4s ease;
+    }
+
+    .project-nav:hover .back-matrix-label {
+        color: var(--swatches--white);
+    }
+
+    /* Media Responsive Layout Breakpoints */
+    @media screen and (max-width: 991px) {
+        .details-wrapper {
+            padding: var(--scale--80) var(--scale--32);
+            gap: var(--scale--40);
+        }
+        .project-wrapper.project {
+            padding: var(--scale--32) var(--scale--32) var(--scale--0)
+                var(--scale--32);
+        }
+        .visual-container {
+            min-height: 45vw;
+        }
+    }
+
+    @media screen and (max-width: 479px) {
+        .adaptive-media-grid {
+            display: flex;
+            flex-direction: column;
+        }
+        .visual-container {
+            min-height: 65vw !important;
+        }
+        .details-wrapper {
+            flex-direction: column;
+            padding: var(--scale--64) var(--scale--16);
+            gap: var(--scale--48);
+        }
+        .credits-container,
+        .description-container {
+            flex: 1 1 100%;
+        }
+        .paragraph.about {
+            column-count: 1;
+        }
+        .project-wrapper.project {
+            padding: var(--scale--16) var(--scale--16) var(--scale--0)
+                var(--scale--16);
+        }
+        .project-links-group {
+            flex-direction: column;
+            gap: var(--scale--12);
+        }
+    }
+</style>

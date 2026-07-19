@@ -24,6 +24,7 @@ body {
 }
 
 a {
+    font-family: var(--font-family--button);
     color: var(--swatches--white);
     font-size: var(--fontsize--link);
     text-decoration: none;
@@ -130,4 +131,15 @@ h1,
     letter-spacing: var(--letter-space--heading-lg);
     text-transform: uppercase;
     text-align: center;
+}
+
+.hero-dynamic-title {
+    font-family: obviously-wide, sans-serif !important;
+    font-weight: 900 !important;
+    /* Forces maximum heavy extrabold weight */
+    font-style: normal !important;
+    /* Forces text upright, completely stripping the italic slant */
+    text-transform: uppercase !important;
+    color: var(--swatches--white) !important;
+    -webkit-text-fill-color: var(--swatches--white) !important;
 }
