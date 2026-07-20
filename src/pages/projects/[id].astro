@@ -11,7 +11,20 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, heroImage, mediaGrid } = entry.data;
+const { title, heroImage, heroVideo, heroType, mediaGrid } = entry.data;
+
+// Calculate Next Project for Footer Navigation
+const allProjects = await getCollection("projects");
+const currentIndex = allProjects.findIndex((p) => p.id === entry.id);
+const nextIndex = (currentIndex + 1) % allProjects.length;
+const nextProject = allProjects[nextIndex];
+
+// Determine whether hero media should render as a video or image
+const isHeroVideo =
+    heroType === "video" ||
+    Boolean(heroVideo) ||
+    heroImage?.match(/\.(mp4|webm|mov)$/i);
+const heroVideoSrc = heroVideo || heroImage;
 
 const currentGrid = mediaGrid || [
     { type: "image", src: heroImage, span: 2 },
@@ -40,12 +53,26 @@ const currentGrid = mediaGrid || [
         <main class="project-main-viewport">
             <!-- Section 1: Hero Block Header -->
             <header class="project-hero-header">
-                <div class="hero-bkg-image-frame">
-                    <img
-                        src={heroImage}
-                        alt={`${title} Landscape Backdrop`}
-                        class="hero-cover-src"
-                    />
+                <div class="hero-bg-frame">
+                    {
+                        isHeroVideo ? (
+                            <video
+                                autoplay
+                                loop
+                                muted
+                                playsinline
+                                class="hero-cover-src"
+                            >
+                                <source src={heroVideoSrc} type="video/mp4" />
+                            </video>
+                        ) : (
+                            <img
+                                src={heroImage}
+                                alt={`${title} Landscape Backdrop`}
+                                class="hero-cover-src"
+                            />
+                        )
+                    }
                 </div>
                 <div class="hero-title-overlay">
                     <h1 class="h1-global-title hero-dynamic-title">
@@ -58,73 +85,60 @@ const currentGrid = mediaGrid || [
             <section class="project-wrapper project">
                 <div class="adaptive-media-grid">
                     {
-                        currentGrid.map((item) => (
-                            <div
-                                class={`visual-container grid-span-${item.span}`}
-                            >
-                                {item.type === "image" && (
-                                    <img
-                                        src={item.src}
-                                        alt="Project Visual Content"
-                                        class="image bkg"
-                                        loading="lazy"
-                                    />
-                                )}
-                                {item.type === "video" && (
-                                    <video
-                                        autoplay
-                                        loop
-                                        muted
-                                        playsinline
-                                        class="video bkg"
-                                    >
-                                        <source
+                        currentGrid.map((item) => {
+                            const isVideo =
+                                item.type === "video" ||
+                                Boolean(item.src?.match(/\.(mp4|webm|mov)$/i));
+                            const isPlaceholder = item.type === "placeholder";
+
+                            return (
+                                <div
+                                    class={`visual-container grid-span-${item.span}`}
+                                >
+                                    {isVideo ? (
+                                        <video
+                                            autoplay
+                                            loop
+                                            muted
+                                            playsinline
+                                            class="video bkg"
+                                        >
+                                            <source
+                                                src={item.src}
+                                                type="video/mp4"
+                                            />
+                                        </video>
+                                    ) : isPlaceholder ? (
+                                        <div class="div-block dark-room-fallback">
+                                            <span class="button-label visual-badge-branding">
+                                                {item.title}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <img
                                             src={item.src}
-                                            type="video/mp4"
+                                            alt={
+                                                item.title ||
+                                                "Project Visual Content"
+                                            }
+                                            class="image bkg"
+                                            loading="lazy"
                                         />
-                                    </video>
-                                )}
-                                {item.type === "placeholder" && (
-                                    <div class="div-block dark-room-fallback">
-                                        <span class="button-label visual-badge-branding">
-                                            {item.title}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-                        ))
+                                    )}
+                                </div>
+                            );
+                        })
                     }
                 </div>
             </section>
 
-            <!-- Section 3: Split Detailed Credits & Descriptive Copy Grid -->
+            <!-- Section 3: Split Detailed Copy & Credits Grid -->
             <section class="details-wrapper">
-                <div class="credits-container">
-                    <h3 class="p-heading project-meta-label">
-                        Project Credits
-                    </h3>
-                    <div class="project-meta-item">
-                        <span class="button-label">Client / Context</span>
-                        <p class="paragraph">
-                            {entry.data.client || "Independent Exploration"}
-                        </p>
-                    </div>
-                    <div class="project-meta-item">
-                        <span class="button-label">Role / Scope</span>
-                        <p class="paragraph">
-                            {entry.data.role || "Design & Development"}
-                        </p>
-                    </div>
-                    <div class="project-meta-item">
-                        <span class="button-label">Timeline</span>
-                        <p class="paragraph">
-                            {entry.data.date || "2026 Build"}
-                        </p>
-                    </div>
-                </div>
-
+                <!-- Left Block: Overview & Description (7 Columns) -->
                 <div class="description-container">
-                    <h3 class="p-heading project-meta-label">Overview</h3>
+                    <h3 class="p-heading project-meta-label">
+                        {entry.data.overviewTitle || "Overview"}
+                    </h3>
                     <p class="paragraph about">
                         {
                             entry.data.description ||
@@ -148,14 +162,69 @@ const currentGrid = mediaGrid || [
                         )
                     }
                 </div>
+
+                <!-- Spacer Column (1 Column Gap) -->
+                <div class="details-spacer"></div>
+
+                <!-- Right Block: Credits (4 Columns) -->
+                <div class="credits-container">
+                    <h3 class="p-heading project-meta-label">
+                        Project Credits
+                    </h3>
+                    <div class="project-meta-item">
+                        <span class="button-label">Client / Context</span>
+                        <p class="paragraph">
+                            {entry.data.client || "Independent Exploration"}
+                        </p>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="button-label">Role / Scope</span>
+                        <p class="paragraph">
+                            {entry.data.role || "Design & Development"}
+                        </p>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="button-label">Timeline</span>
+                        <p class="paragraph">
+                            {entry.data.date || "2026 Build"}
+                        </p>
+                    </div>
+                </div>
             </section>
 
-            <!-- Section 4: Return Interface Anchor Footer -->
+            <!-- Section 4: Minimalist Return Footer -->
             <footer class="project-nav-footer-nav">
-                <a href="/" class="project-nav w-inline-block">
-                    <span class="button-label">RETURN TO MATRIX</span>
-                    <h2 class="h1-global-title back-matrix-label">INDEX</h2>
+                <!-- Next Project Direct Link -->
+                <a
+                    href={`/projects/${nextProject.id}`}
+                    class="project-nav w-inline-block"
+                >
+                    <h2 class="h1-global-title next-label">Next</h2>
                 </a>
+
+                <!-- Stacked Social Links -->
+                <div class="footer-social-links">
+                    <a href="mailto:hello@ikeriza.com" class="footer-word-link"
+                        >Email</a
+                    >
+                    <a
+                        href="https://www.linkedin.com/in/ikeriza/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="footer-word-link">LinkedIn</a
+                    >
+                    <a
+                        href="https://www.instagram.com/iker.iza"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="footer-word-link">Instagram</a
+                    >
+                </div>
+
+                <!-- Copyright Text Box -->
+                <div class="footer-copyright">
+                    <p>© by.iza 2026</p>
+                </div>
             </footer>
         </main>
     </body>
@@ -181,7 +250,7 @@ const currentGrid = mediaGrid || [
         margin: var(--scale--0);
     }
 
-    .hero-bkg-image-frame {
+    .hero-bg-frame {
         position: absolute;
         inset: var(--scale--0);
         width: 100%;
@@ -194,6 +263,7 @@ const currentGrid = mediaGrid || [
         height: 100%;
         object-fit: cover;
         opacity: 0.65;
+        display: block;
     }
 
     .hero-title-overlay {
@@ -207,7 +277,7 @@ const currentGrid = mediaGrid || [
         transform: translate(-50%, -50%);
     }
 
-    /* Local over-rides for sizing scales */
+    /* Local overrides for sizing scales */
     .hero-dynamic-title {
         font-family: obviously-wide, sans-serif !important;
         font-weight: 900 !important;
@@ -281,25 +351,29 @@ const currentGrid = mediaGrid || [
         letter-spacing: var(--letter-space--button);
     }
 
-    /* Details Grid and Links Blocks */
+    /* Details Grid (12-Column Grid Ratio: 7 / 1 Gap / 4 Columns) */
     .details-wrapper {
-        display: flex;
-        flex-direction: row;
-        gap: var(--scale--64);
-        padding: var(--scale--168) var(--scale--72);
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        padding: var(--scale--40) var(--scale--0);
         background-color: var(--swatches--black);
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 0px solid rgba(255, 255, 255, 0.05);
+        width: 100%;
     }
 
-    .credits-container {
-        flex: 0 0 35%;
+    .description-container {
+        grid-column: span 7;
         display: flex;
         flex-direction: column;
         gap: var(--scale--24);
     }
 
-    .description-container {
-        flex: 1;
+    .details-spacer {
+        grid-column: span 1;
+    }
+
+    .credits-container {
+        grid-column: span 4;
         display: flex;
         flex-direction: column;
         gap: var(--scale--24);
@@ -318,10 +392,10 @@ const currentGrid = mediaGrid || [
         gap: var(--scale--4);
     }
 
+    /* Paragraph set to a single continuous column */
     .paragraph.about {
-        column-count: 2;
-        column-gap: var(--scale--48);
-        text-align: justify;
+        column-count: 1;
+        text-align: left;
     }
 
     .project-links-group {
@@ -343,33 +417,74 @@ const currentGrid = mediaGrid || [
 
     /* Footer Navigation Styling Blocks */
     .project-nav-footer-nav {
-        padding: var(--scale--168) var(--scale--0);
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: var(--scale--168) var(--scale--0) var(--scale--40)
+            var(--scale--0);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--scale--80);
         text-align: center;
     }
 
     .project-nav {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
+        display: inline-block;
         cursor: pointer;
         text-decoration: none;
     }
 
-    .back-matrix-label {
-        color: var(--opacity--white);
+    .next-label {
+        color: var(--swatches--800);
         transition: color 0.4s ease;
+        text-transform: none !important;
+        font-family: obviously-wide, sans-serif !important;
+        font-weight: 800 !important;
+        font-style: normal !important;
+        font-size: var(--fontsize--heading-lg) !important;
+        line-height: var(--line-height--heading-lg) !important;
+        letter-spacing: var(--letter-space--heading-lg) !important;
     }
 
-    .project-nav:hover .back-matrix-label {
+    .project-nav:hover .next-label {
         color: var(--swatches--white);
+    }
+
+    /* Footer Social Word Links (Vertical Stack) */
+    .footer-social-links {
+        margin-top: var(--scale--168);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--scale--48);
+    }
+
+    .footer-word-link {
+        font-family: var(--font-family--body);
+        font-size: var(--scale--56);
+        color: var(--swatches--white);
+        text-decoration: none;
+        transition: text-decoration 0.3s ease;
+    }
+
+    .footer-word-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Copyright Line */
+    .footer-copyright {
+        margin-top: var(--scale--80);
+    }
+
+    .footer-copyright p {
+        font-family: var(--font-family--body);
+        font-size: var(--scale--20);
+        color: var(--swatches--white);
+        margin: 0;
     }
 
     /* Media Responsive Layout Breakpoints */
     @media screen and (max-width: 991px) {
         .details-wrapper {
             padding: var(--scale--80) var(--scale--32);
-            gap: var(--scale--40);
         }
         .project-wrapper.project {
             padding: var(--scale--32) var(--scale--32) var(--scale--0)
@@ -380,6 +495,26 @@ const currentGrid = mediaGrid || [
         }
     }
 
+    @media screen and (max-width: 768px) {
+        .details-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: var(--scale--64) var(--scale--16);
+            gap: var(--scale--48);
+        }
+        .description-container,
+        .credits-container {
+            grid-column: span 12;
+            width: 100%;
+        }
+        .details-spacer {
+            display: none;
+        }
+        .footer-word-link {
+            font-size: var(--scale--24);
+        }
+    }
+
     @media screen and (max-width: 479px) {
         .adaptive-media-grid {
             display: flex;
@@ -387,18 +522,6 @@ const currentGrid = mediaGrid || [
         }
         .visual-container {
             min-height: 65vw !important;
-        }
-        .details-wrapper {
-            flex-direction: column;
-            padding: var(--scale--64) var(--scale--16);
-            gap: var(--scale--48);
-        }
-        .credits-container,
-        .description-container {
-            flex: 1 1 100%;
-        }
-        .paragraph.about {
-            column-count: 1;
         }
         .project-wrapper.project {
             padding: var(--scale--16) var(--scale--16) var(--scale--0)
