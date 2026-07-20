@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/content/loaders'; // Standard loader for Astro 5+
+import { glob } from 'astro/loaders'; // ✅ Fixed: changed 'astro/content/loaders' to 'astro/loaders'
 
 const projects = defineCollection({
     // Modern Astro 5+ loader looking inside src/content/projects/
@@ -7,6 +7,9 @@ const projects = defineCollection({
     schema: z.object({
         title: z.string(),
         heroImage: z.string(),
+        heroVideo: z.string().optional(),
+        heroType: z.enum(['image', 'video']).optional(),
+        overviewTitle: z.string().optional(),
         client: z.string().optional(),
         role: z.string().optional(),
         date: z.string().optional(),
