@@ -57,7 +57,7 @@ rows:
       - image: "/media/67080763f4c03140b64bac42_a79d219fa30c9dcf8312d29501b70c64_HH-food-02.webp"
         alt: "Three Hungry House salads and a spiced chicken dish in white bowls on a saturated cobalt blue background"
       - alt: "Hungry House \"Opening Soon\" Instagram story with green starburst reading S.01 and \"brooklyn nyc\" script, cycling slideshow"
-        background: "#ffffff"
+        background: "#ffbf14"
         slides:
           - "/media/6709e92710825cc3dc7514ab_Frame-2060.webp"
           - "/media/6709e927e350fc7867261c07_Frame-2069.webp"

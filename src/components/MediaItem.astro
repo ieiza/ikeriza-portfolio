@@ -18,6 +18,7 @@ const classes = [
   'media-cell',
   'contain' in item && item.contain && 'media-cell--contain',
   'vertical' in item && item.vertical && 'media-cell--vertical',
+  'slides' in item && 'media-cell--slides',
 ];
 ---
 <div class:list={classes} style={style}>
