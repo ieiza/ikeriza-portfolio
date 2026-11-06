@@ -1,5 +1,7 @@
 ---
 title: "BeautyBio"
+seoTitle: "BeautyBio Packaging Design — Skincare | Iker Iza"
+description: "Packaging design that unified BeautyBio’s 30+ skincare products ahead of its Sephora expansion; sales passed $50M in the first year. QNY Creative, 2017."
 order: 4
 menuTitle: "Beauty Bio"
 cover: "/media/670802677397a0b751afce57_38792284_1941239509271591_7502366150407867909_n.webp"
@@ -83,7 +85,7 @@ rows:
         alt: "BeautyBio R45 Reversal phases and The Daily serum arranged in a pink gift box"
 ---
 
-In preparation for a major retail expansion, BeautyBio, a female-founded skincare brand, unified its 30+ product line under a cohesive design inspired by Neo-plasticism, reflecting its scientific roots and premium quality while restoring order and balance to Gen X and Millennial's everyday life.
+In preparation for a major retail expansion, BeautyBio, a female-founded skincare brand, unified its 30+ product line under a cohesive design inspired by Neo-plasticism, reflecting its scientific roots and premium quality while restoring order and balance to Gen X and Millennials' everyday life.
 
 The rebrand drove remarkable growth, with sales exceeding $50M in the first year and expanding BeautyBio’s global footprint to 400+ Sephora stores, Harrods, and Mecca.
 

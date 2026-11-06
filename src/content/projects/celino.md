@@ -1,5 +1,7 @@
 ---
 title: "Celino Hotel"
+seoTitle: "Celino Hotel Brand Identity — Miami Beach | Iker Iza"
+description: "Brand identity for the Celino Hotel, the $110M revival of South Beach’s Park Central Hotel with 1940s Miami glamour. Highgate Hotels, QNY Creative, 2016."
 order: 3
 menuTitle: "Celino Hotel"
 cover: "/media/6707ccae97a6c0e4f8c3a923_6689352fcf1675ffdc83ec51d517e8e4_CE-model-01.webp"

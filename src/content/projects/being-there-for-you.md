@@ -1,5 +1,7 @@
 ---
 title: "Everywhere"
+seoTitle: "Bank Sabadell “Everywhere” Campaign | Iker Iza"
+description: "Creative direction and design for Bank Sabadell’s “Everywhere” digital banking campaign: “Your bank wherever you are.” S.C.P.F. Barcelona, 2012."
 order: 8
 menuTitle: |
   Every

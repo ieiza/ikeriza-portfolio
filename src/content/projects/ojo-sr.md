@@ -1,5 +1,7 @@
 ---
 title: "Ojo Sr"
+seoTitle: "Ojo Señor — Street Art with LED Eyes | Iker Iza"
+description: "Ojo Señor, a personal street-art project: wheat-pasted posters with glowing LED eyes that turn a city’s dark corners surreal. Barcelona, ongoing."
 order: 15
 menuTitle: "Ojo Sr."
 cover: "/media/671f9e37a242b74eed28bdff_MV5BMDEzNGFiYmUtMDlhOS00YWY4LThkY2ItOGUzOTEzZDQwOTI2XkEyXkFqcGc._V1_.webp"
@@ -101,7 +103,7 @@ rows:
         alt: "People installing skull diamond posters on a wall during the Ojo Señor interiors destruction party"
 ---
 
-Ojo Señor is a deeply personal street art project that has transforms the darkened corners of a city into a playground of the surreal.
+Ojo Señor is a deeply personal street art project that transforms the darkened corners of a city into a playground of the surreal.
 
 Inspired by the eerie glowing eyes of nocturnal cats and the hypnotic power of the children in Village of the Damned, this series of wheat-pasted posters merges LED technology with haunting visuals. From menacing children to Edgar Allan Poe-inspired imagery, these works explore themes of control, fear, and fascination, all with a playful, subversive twist.
 

@@ -1,6 +1,6 @@
 ---
-title: "Iker Iza - NYC | Brand Development & Creative Direction"
-description: "Over 20 years of experience in Branding, Packaging, Web, Apps, Events, Virtual Reality, and more"
+title: "About Iker Iza — Creative Director in New York"
+description: "Iker Iza is a creative director and designer in New York with over 20 years in branding, packaging, web, apps, events and virtual reality."
 ogImage: "/media/67ae3a912d7055e81499505c_IMG-200068.jpg"
 image: "/media/67ae3a912d7055e81499505c_IMG-200068.jpg"
 heading: "Hello!"

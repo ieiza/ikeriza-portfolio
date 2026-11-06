@@ -1,5 +1,7 @@
 ---
 title: "SHP"
+seoTitle: "Shared History Project — Exhibit & Web Design | Iker Iza"
+description: "Brand identity, website and traveling exhibit for the Leo Baeck Institute’s Shared History Project: 1,700 years of Jewish life told through 52 objects."
 order: 12
 menuTitle: "S.H.P."
 cover: "/media/6715b0795c5e064b37b4b660_27_NewSynag_LBI_16x9_01.webp"

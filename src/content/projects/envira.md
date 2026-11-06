@@ -1,5 +1,7 @@
 ---
 title: "Envira"
+seoTitle: "Envira Website Design — Residential Living | Iker Iza"
+description: "Website design and development for Envira, DWS’s tenant-centered rental communities built around amenities and wellbeing. 360 Design NYC, 2021."
 order: 9
 menuTitle: "Envira"
 cover: "/media/671173e79b4c3bb86331643b_Firefly-20Group-20in-20Colorful-20PJs.webp"

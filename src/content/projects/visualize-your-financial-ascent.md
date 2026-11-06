@@ -1,5 +1,7 @@
 ---
 title: "Charts - Visualize Your Financial Ascent"
+seoTitle: "Bank Sabadell “Charts” Enterprise Campaign | Iker Iza"
+description: "Creative direction and design for Bank Sabadell’s Enterprise Account campaign: “Charting a new trajectory for your company’s future.” S.C.P.F., 2013."
 ogImage: "/media/688d29fdcc68447222280dac_BS-Emp-Bboard-Visual-Hor-sm-mock-02.jpg"
 order: 13
 menuTitle: "Charts"

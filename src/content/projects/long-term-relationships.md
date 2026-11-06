@@ -1,5 +1,7 @@
 ---
 title: "Candor - A Manifesto for Enduring Relationships"
+seoTitle: "Bank Sabadell “Candor” Campaign | Iker Iza"
+description: "Art direction and design for Bank Sabadell’s “Candor” campaign on long-term business relationships, told through black-and-white gestures. S.C.P.F., 2012."
 ogImage: "/media/686e8a4c1ead7c27ab038a14_BS-Val-Bboard-Hor-Mock-07-1.jpg"
 order: 5
 menuTitle: "Candor"

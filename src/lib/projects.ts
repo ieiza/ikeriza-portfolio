@@ -31,3 +31,14 @@ export function excerpt(markdown: string, max = 160): string {
 
 /** Split a title on line breaks for display ("Air\nTerra"). */
 export const titleLines = (title: string) => title.trim().split('\n').map((l) => l.trim());
+
+/** Facts pulled from a project's credits block (used for structured data). */
+export function parseCredits(credits: string) {
+  const groups = credits.trim().split(/\n\s*\n/).map((g) => g.trim());
+  const disciplines = (groups[0] ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+  const dev = groups.find((g) => /^Developed @/i.test(g)) ?? '';
+  const studio = dev.match(/^Developed @\s*(.+)$/im)?.[1]?.trim();
+  const year = dev.match(/\b(19|20)\d{2}\b/)?.[0];
+  const client = credits.match(/^Client:\s*(.+)$/im)?.[1]?.trim();
+  return { disciplines, studio, year, client };
+}

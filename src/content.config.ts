@@ -63,8 +63,10 @@ const row = z.union([
 const projects = defineCollection({
   loader: glob({ pattern: '**/[^_]*.md', base: './src/content/projects' }),
   schema: z.object({
-    /** Browser tab / search result title. */
+    /** Project name (used in structured data and as the fallback page title). */
     title: z.string(),
+    /** Full search-result title, ~60 characters max ("Client Discipline — Sector | Iker Iza"). */
+    seoTitle: z.string().max(70).optional(),
     /** Search and share description. */
     description: z.string().optional(),
     ogImage: path.optional(),
