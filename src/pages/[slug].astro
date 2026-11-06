@@ -35,7 +35,7 @@ const schema = {
   creator: { '@id': new URL('/#person', Astro.site).href },
 };
 ---
-<Base title={pageTitle} description={description} ogImage={ogImage} schema={schema}>
+<Base pageType="project" title={pageTitle} description={description} ogImage={ogImage} schema={schema}>
   <section class="project-hero">
     <div class="project-hero__media">
       {'image' in data.hero
