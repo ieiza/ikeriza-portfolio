@@ -4,6 +4,8 @@
 // Keyboard (when the player has focus): Space/K play-pause, ←/→ seek 5s,
 // M mute, F full screen.
 
+import { track } from './analytics';
+
 type State = 'idle' | 'playing' | 'paused' | 'ended';
 
 const players: HTMLElement[] = [];
@@ -56,9 +58,37 @@ function setup(root: HTMLElement) {
   toggle.addEventListener('click', () => { togglePlay(); wake(); });
   video.addEventListener('click', togglePlay);
 
-  video.addEventListener('play', () => { setState('playing'); wake(); });
+  // Analytics: same event names GA4 uses for embedded videos.
+  const videoParams = () => ({
+    video_title: title,
+    video_url: video.currentSrc,
+    video_provider: 'self-hosted',
+    video_duration: Math.round(video.duration || 0),
+    video_current_time: Math.round(video.currentTime),
+  });
+  let started = false;
+  const milestones = new Set<number>();
+
+  video.addEventListener('play', () => {
+    setState('playing');
+    wake();
+    if (!started) { started = true; track('video_start', videoParams()); }
+  });
   video.addEventListener('pause', () => { if (!video.ended) setState('paused'); wake(); });
-  video.addEventListener('ended', () => { setState('ended'); root.classList.remove('is-active'); });
+  video.addEventListener('ended', () => {
+    setState('ended');
+    root.classList.remove('is-active');
+    track('video_complete', { ...videoParams(), video_percent: 100 });
+    started = false;
+    milestones.clear();
+  });
+  video.addEventListener('timeupdate', () => {
+    if (!video.duration) return;
+    const pct = (video.currentTime / video.duration) * 100;
+    for (const m of [25, 50, 75]) {
+      if (pct >= m && !milestones.has(m)) { milestones.add(m); track('video_progress', { ...videoParams(), video_percent: m }); }
+    }
+  });
   video.addEventListener('loadedmetadata', () => { duration.textContent = fmt(video.duration); });
   video.addEventListener('timeupdate', () => {
     const pct = video.duration ? (video.currentTime / video.duration) * 100 : 0;
