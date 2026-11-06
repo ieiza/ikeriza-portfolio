@@ -1,0 +1,31 @@
+---
+// Muted, looping, autoplaying video. Off-screen videos don't download until
+// they come near the viewport (see scripts/site.ts), unless `eager` is set.
+import { videoSources } from '../lib/media';
+
+interface Props {
+  src: string;
+  eager?: boolean;
+  filter?: string;
+  class?: string;
+}
+const { src, eager = false, filter, class: className } = Astro.props;
+const { mp4, webm, poster } = videoSources(src);
+---
+<div class:list={['bg-video', className]} style={filter ? `filter:${filter}` : undefined}>
+  <video
+    muted
+    loop
+    playsinline
+    disablepictureinpicture
+    aria-hidden="true"
+    autoplay={eager}
+    preload={eager ? 'auto' : 'none'}
+    data-bg-video={eager ? undefined : ''}
+    poster={poster}
+    style={poster ? `background-image:url("${poster}")` : undefined}
+  >
+    <source src={mp4} type="video/mp4" />
+    {webm && <source src={webm} type="video/webm" />}
+  </video>
+</div>

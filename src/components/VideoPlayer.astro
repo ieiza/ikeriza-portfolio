@@ -1,0 +1,187 @@
+---
+// The site's own video player (replaces the Vimeo embeds).
+// A muted preview loops until PLAY is pressed; then the full video plays in place
+// with sound. The big controls are typeset in the heading font: "PLAY" and "II".
+// Behaviour lives in src/scripts/player.ts.
+import BackgroundVideo from './BackgroundVideo.astro';
+
+interface Props {
+  src: string;
+  poster?: string;
+  preview: string;
+  title: string;
+  background?: string;
+}
+const { src, poster, preview, title, background = '#000' } = Astro.props;
+---
+<section class="player" style={`--player-bg:${background}`} data-player data-state="idle" aria-label={`Video: ${title}`}>
+  <div class="player__frame" data-player-frame>
+    <BackgroundVideo src={preview} class="player__preview" />
+    <video class="player__video" preload="none" playsinline poster={poster} data-player-video>
+      <source src={src} type="video/mp4" />
+    </video>
+
+    <button class="player__toggle" type="button" data-player-toggle aria-label={`Play ${title}`}>
+      <span class="player__word player__word--play" aria-hidden="true">Play</span>
+      <span class="player__word player__word--pause" aria-hidden="true">II</span>
+    </button>
+
+    <div class="player__controls" data-player-controls>
+      <span class="player__time" data-player-time>0:00</span>
+      <div
+        class="player__progress"
+        data-player-progress
+        role="slider"
+        tabindex="0"
+        aria-label="Seek"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        aria-valuetext="0:00"
+      >
+        <span class="player__progress-fill" data-player-fill></span>
+      </div>
+      <span class="player__time" data-player-duration>0:00</span>
+      <button class="player__text-button" type="button" data-player-mute>Sound</button>
+      <button class="player__text-button" type="button" data-player-fullscreen>Full</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60vw;
+    background-color: var(--player-bg);
+  }
+
+  .player__frame {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 84%;
+    border: 8px solid var(--black);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .player__frame:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
+
+  .player :global(.player__preview) { position: absolute; inset: 0; }
+  .player__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: var(--black);
+    visibility: hidden;
+  }
+  /* The full video shows while playing or paused; idle and ended show the looping preview. */
+  .player:is([data-state='playing'], [data-state='paused']) .player__video { visibility: visible; }
+  .player:is([data-state='playing'], [data-state='paused']) :global(.player__preview) { visibility: hidden; }
+
+  /* Big typographic toggle */
+  .player__toggle {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: var(--heading-lg-size);
+    font-weight: 900;
+    line-height: var(--heading-sm-line);
+    letter-spacing: var(--heading-lg-tracking);
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 0 16px #00000040;
+    background-color: #00000040;
+    transition: background-color 200ms ease, opacity 200ms ease;
+  }
+  .player__frame:fullscreen .player__toggle { font-size: 20vw; }
+  .player__word { display: none; padding-bottom: 0.25rem; }
+  /* Pause is deliberately small so it barely covers the video. */
+  .player__word--pause {
+    font-size: clamp(2rem, 4.5vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0.08em;
+    padding-bottom: 0;
+  }
+
+  .player[data-state='idle'] .player__word--play,
+  .player[data-state='paused'] .player__word--play,
+  .player[data-state='ended'] .player__word--play,
+  .player[data-state='playing'] .player__word--pause { display: block; }
+
+  .player__toggle:hover .player__word,
+  .player__toggle:focus-visible .player__word {
+    animation: player-nudge 500ms cubic-bezier(0.19, 1, 0.22, 1); /* outExpo */
+  }
+  @keyframes player-nudge { from { transform: translateY(25px); } to { transform: none; } }
+
+  /* While playing, the pause mark only appears when the pointer is over the video. */
+  .player[data-state='playing'] .player__toggle { background-color: transparent; opacity: 0; }
+  .player[data-state='playing'].is-active .player__toggle,
+  .player[data-state='playing'] .player__toggle:focus-visible { background-color: transparent; opacity: 1; }
+
+  /* Bottom control bar, set in the mono face */
+  .player__controls {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.25rem 1rem;
+    font-family: var(--font-mono);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(0.8rem, 1.1vw, 1.1rem);
+    letter-spacing: var(--button-tracking);
+    text-transform: uppercase;
+    color: var(--white);
+    background: linear-gradient(transparent, #00000080);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms ease, visibility 200ms;
+  }
+  .player:is([data-state='playing'], [data-state='paused']).is-active .player__controls,
+  .player[data-state='paused'] .player__controls,
+  .player__controls:focus-within { opacity: 1; visibility: visible; }
+
+  .player__time { font-variant-numeric: tabular-nums; min-width: 3.5ch; }
+  .player__progress {
+    position: relative;
+    flex: 1;
+    height: 1.5rem;
+    cursor: pointer;
+    touch-action: none;
+  }
+  .player__progress::before,
+  .player__progress-fill {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 0.15rem;
+    transform: translateY(-50%);
+    background: var(--white);
+  }
+  .player__progress::before { right: 0; opacity: 0.3; }
+  .player__progress-fill { width: 0; }
+  .player__text-button { text-transform: inherit; letter-spacing: inherit; }
+  .player__text-button:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+  .player__text-button[aria-pressed='true'] { text-decoration: line-through; }
+
+  @media (max-width: 479px) {
+    .player__controls { gap: 0.6rem; padding: 0.75rem 0.6rem 0.5rem; }
+  }
+</style>

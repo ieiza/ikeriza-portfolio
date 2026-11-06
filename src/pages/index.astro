@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import Picture from '../components/Picture.astro';
+import { getProjects, titleLines } from '../lib/projects';
+
+const projects = await getProjects();
+---
+<Base title="Iker Iza - NYC | Brand Development & Creative Direction: Strategy, Design, Operations, Management">
+  <section class="home-hero">
+    <h1 class="visually-hidden">Iker Iza — Brand Development &amp; Creative Direction</h1>
+    <div class="home-hero__model">
+      <model-viewer
+        data-home-logo
+        src="/media/67172fdd97444b0f7c6dbdee_iker-logo-3d-animation.glb"
+        alt="Iker Iza 3D logo"
+        animation-name="Top"
+        camera-controls
+        touch-action="pan-y"
+        disable-zoom
+        disable-tap
+        tone-mapping="neutral"
+        shadow-intensity="0"
+        exposure="0.89"
+        camera-orbit="calc(0deg + env(window-scroll-y) * 120deg) calc(90deg + env(window-scroll-y) * 180deg) calc(12m - env(window-scroll-y) * 17m)"
+        field-of-view="30deg"
+        camera-target="0.3499m 10.27m 0m"
+        min-camera-orbit="auto auto 5.00m"
+        max-camera-orbit="auto auto 30.00m"
+        min-field-of-view="30deg"
+        interaction-prompt="none"
+      ></model-viewer>
+    </div>
+  </section>
+
+  <nav class="project-list" aria-label="Projects">
+    {projects.map((p, i) => (
+      <a class="project-list__item" href={`/${p.id}`} data-project-item>
+        <span class="project-list__cover">
+          <Picture src={p.data.cover} sizes="100vw" eager={i === 0} />
+        </span>
+        <h2 class="display project-list__title">
+          {titleLines(p.data.menuTitle).map((line, j) => <>{j > 0 && <br />}{line}</>)}
+        </h2>
+      </a>
+    ))}
+  </nav>
+</Base>

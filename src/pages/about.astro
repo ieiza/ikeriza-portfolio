@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Picture from '../components/Picture.astro';
+import { Content, frontmatter } from '../content/about.md';
+---
+<Base title={frontmatter.title} description={frontmatter.description} ogImage={frontmatter.ogImage}>
+  <section class="project-hero">
+    <div class="project-hero__media">
+      <Picture src={frontmatter.image} alt="Iker Iza" sizes="100vw" eager />
+    </div>
+    <h1 class="visually-hidden">About Iker Iza</h1>
+  </section>
+
+  <section class="details">
+    <div class="details__column details__column--wide">
+      <h2 class="details__heading">{frontmatter.heading}</h2>
+      <div class="details__text details__text--columns"><Content /></div>
+    </div>
+  </section>
+
+  <nav class="page-nav" aria-label="Back">
+    <a href="/">Back</a>
+  </nav>
+</Base>

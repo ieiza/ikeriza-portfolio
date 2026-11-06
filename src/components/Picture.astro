@@ -1,0 +1,24 @@
+---
+// <img> with the responsive copies Webflow generated for each upload.
+import { srcset } from '../lib/media';
+
+interface Props {
+  src: string;
+  alt?: string;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { src, alt = '', sizes = '100vw', eager = false, class: className } = Astro.props;
+const set = srcset(src);
+---
+<img
+  src={src}
+  srcset={set}
+  sizes={set ? sizes : undefined}
+  alt={alt}
+  class={className}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : undefined}
+  decoding="async"
+/>

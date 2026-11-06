@@ -1,4 +1,10 @@
 ---
-import SitePage from '../components/SitePage.astro';
+import Base from '../layouts/Base.astro';
 ---
-<SitePage slug="404" />
+<Base title="Not Found | Iker Iza" description="This page doesn't exist." bare>
+  <section class="not-found">
+    <h1>404</h1>
+    <p>The page you are looking for doesn't exist or has been moved.</p>
+    <nav class="page-nav" aria-label="Back"><a href="/">Back</a></nav>
+  </section>
+</Base>
