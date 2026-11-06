@@ -119,6 +119,10 @@ scrolls and outbound clicks, `src/scripts/analytics.ts` sends:
 | `model_interact` | First drag of a 3D model | `model` |
 | `page_not_found` | A 404 page is shown | `page_path`, `page_referrer` |
 
+Vercel Web Analytics and Speed Insights are also on (Vercel dashboard →
+project → Analytics / Speed Insights); their scripts load from `/_vercel/…`
+in production builds.
+
 ## SEO
 
 - Every page has a title, description, canonical URL, share image and JSON-LD
