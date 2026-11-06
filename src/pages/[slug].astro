@@ -1,0 +1,64 @@
+---
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Picture from '../components/Picture.astro';
+import BackgroundVideo from '../components/BackgroundVideo.astro';
+import MediaItem from '../components/MediaItem.astro';
+import VideoPlayer from '../components/VideoPlayer.astro';
+import { getProjects, nextProject, titleLines, type Project } from '../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project, next: nextProject(projects, project) },
+  }));
+}
+
+interface Props { project: Project; next: Project }
+const { project, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const creditGroups = data.credits.trim().split(/\n\s*\n/).map((g) => g.split('\n'));
+---
+<Base title={data.title} description={data.description} ogImage={data.ogImage ?? ('image' in data.hero ? data.hero.image : data.cover)}>
+  <section class="project-hero">
+    <div class="project-hero__media">
+      {'image' in data.hero
+        ? <Picture src={data.hero.image} sizes="100vw" eager />
+        : <BackgroundVideo src={data.hero.video} eager />}
+    </div>
+    <h1 class="project-hero__title">
+      {titleLines(data.heroTitle).map((line, i) => <>{i > 0 && <br />}{line}</>)}
+    </h1>
+  </section>
+
+  <div class="project-rows">
+    {data.rows.map((row) =>
+      'player' in row ? (
+        <VideoPlayer {...row.player} />
+      ) : (
+        <div class:list={['media-row', `media-row--${row.columns}`, row.short && 'media-row--short']}>
+          {row.items.map((item) => <MediaItem item={item} columns={row.columns} />)}
+        </div>
+      ),
+    )}
+  </div>
+
+  <section class="details">
+    <div class="details__column">
+      <h2 class="details__heading">{data.heading}</h2>
+      <div class="details__text"><Content /></div>
+    </div>
+    <div class="details__column details__column--credits">
+      <h2 class="details__heading">{data.creditsHeading}</h2>
+      <div class="details__text">
+        {creditGroups.map((lines) => <p>{lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <nav class="page-nav" aria-label="Next project">
+    <a href={`/${next.id}`} aria-label={`Next project: ${titleLines(next.data.menuTitle).join(' ')}`}>Next</a>
+  </nav>
+</Base>

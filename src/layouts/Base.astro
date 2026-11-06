@@ -1,0 +1,74 @@
+---
+import '@fontsource/victor-mono/latin-700-italic.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  /** Hide the footer (used by the 404 page). */
+  bare?: boolean;
+}
+
+const DEFAULT_DESCRIPTION =
+  'Experience in Branding, Packaging, Web, Apps, Events, Virtual Reality, and more; in sectors such as CPG, Hospitality, Art & Entertainment, E-Com, Transportation, Tech, and AI.';
+const DEFAULT_OG_IMAGE = '/media/6806f3bcea1b73b097048a26_EN-Display-Hor-Double-01.jpg';
+
+const { title, description = DEFAULT_DESCRIPTION, ogImage = DEFAULT_OG_IMAGE, bare = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site);
+const isProd = import.meta.env.PROD;
+---
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" href="/media/6706c5da31673ad438e49a2f_5dc8d22011520e5f5eefd041_IzaFavicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/media/6706c5dfc8c10752d97ed7b7_5dc8d226d6571ec64bc8ed9d_IzaWebclip.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <!-- Adobe Fonts (obviously, obviously-wide). The kit must list every domain the site is served from. -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="stylesheet" href="https://use.typekit.net/lmi7yvo.css" />
+
+    {isProd && (
+      <>
+        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WQ92F84BL4"></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', 'G-WQ92F84BL4');
+        </script>
+        <script is:inline async src="https://analytics.ahrefs.com/analytics.js" data-key="z8gFJ2JlZxTLvbpSDAxfyw"></script>
+      </>
+    )}
+    <slot name="head" />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    {!bare && <Footer />}
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

@@ -9,16 +9,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "videos": "node scripts/encode-videos.mjs"
   },
   "dependencies": {
-    "@types/three": "^0.185.1",
+    "@fontsource/victor-mono": "^5.2.6",
+    "@google/model-viewer": "^4.1.0",
     "astro": "^7.1.1",
-    "lottie-web": "^5.13.0",
-    "three": "^0.185.1"
+    "lottie-web": "^5.13.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@types/node": "^24.19.2",
     "typescript": "^6.0.3"
   }
 }

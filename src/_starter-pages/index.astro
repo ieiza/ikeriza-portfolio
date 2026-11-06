@@ -1,0 +1,37 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import ProjectGrid from "../components/ProjectGrid.astro";
+---
+
+<Layout title="Iker Iza - NYC | Brand Development & Creative Direction">
+    <!-- Navbar Component Block Element -->
+    <Navbar />
+
+    <!-- Hero Component Canvas Background Engine -->
+    <Hero />
+
+    <!-- Interactive Portfolio Collection Mapping List Grid Element -->
+    <ProjectGrid />
+
+    <!-- Persistent Shared Background Wrapper Backdrop Node Layer -->
+    <div id="dynamic-bkg-container"></div>
+</Layout>
+
+<style>
+    #dynamic-bkg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100dvh;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>

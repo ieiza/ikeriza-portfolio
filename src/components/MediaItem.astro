@@ -1,0 +1,56 @@
+---
+import type { Item } from '../content.config';
+import Picture from './Picture.astro';
+import BackgroundVideo from './BackgroundVideo.astro';
+import { sizesFor } from '../lib/media';
+
+interface Props {
+  item: Item;
+  columns: number;
+}
+const { item, columns } = Astro.props;
+const sizes = sizesFor(columns);
+
+const background = 'background' in item ? item.background : undefined;
+const padding = 'padding' in item ? item.padding : undefined;
+const style = [background && `background-color:${background}`, padding && `padding:${padding}`].filter(Boolean).join(';') || undefined;
+const classes = [
+  'media-cell',
+  'contain' in item && item.contain && 'media-cell--contain',
+  'vertical' in item && item.vertical && 'media-cell--vertical',
+];
+---
+<div class:list={classes} style={style}>
+  {'image' in item && <Picture src={item.image} alt={item.alt} sizes={sizes} />}
+
+  {'video' in item && <BackgroundVideo src={item.video} filter={item.filter} />}
+
+  {'lottie' in item && <div class="lottie" data-lottie={item.lottie} data-lottie-loop aria-hidden="true"></div>}
+
+  {'slides' in item && (
+    <div class="slideshow" data-slideshow aria-roledescription="slideshow">
+      {item.slides.map((src, i) => (
+        <img src={src} alt="" loading="lazy" decoding="async" class:list={[i === 0 && 'is-current']} />
+      ))}
+    </div>
+  )}
+
+  {'model' in item && (
+    <model-viewer
+      src={item.model}
+      camera-controls
+      touch-action="pan-y"
+      auto-rotate
+      disable-tap
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      tone-mapping="neutral"
+      shadow-intensity="1"
+      exposure="0.89"
+      field-of-view="30deg"
+      camera-orbit={item.cameraOrbit}
+      camera-target={item.cameraTarget}
+      loading="lazy"
+    ></model-viewer>
+  )}
+</div>

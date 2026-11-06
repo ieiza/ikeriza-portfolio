@@ -1,0 +1,22 @@
+---
+const isHome = Astro.url.pathname === '/';
+---
+<nav class="navbar" data-navbar aria-label="Main">
+  <a class="nav-button" href="/about">
+    <span class="nav-button__label">About</span>
+    <span class="nav-button__line" aria-hidden="true"></span>
+  </a>
+  <a class="nav-logo" href="/" aria-label="Iker Iza, home" aria-current={isHome ? 'page' : undefined}>
+    <span
+      class="nav-logo__animation"
+      data-lottie="/media/670738a026c2f09fcab17aef_logo-lottie_00000.json"
+      data-lottie-hover
+      aria-hidden="true"
+      style="display:block"
+    ></span>
+  </a>
+  <a class="nav-button" href="#contact">
+    <span class="nav-button__label">Contact</span>
+    <span class="nav-button__line" aria-hidden="true"></span>
+  </a>
+</nav>
