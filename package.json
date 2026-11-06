@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync": "node scripts/sync-site.mjs",
+    "check": "astro check"
   },
   "dependencies": {
     "@types/three": "^0.185.1",

@@ -1,5 +1,6 @@
 // Loads the HTML files written by scripts/sync-site.mjs and splits each
-// into the pieces SitePage.astro needs.
+// into the pieces SitePage.astro needs, after the clean-up in optimize.ts.
+import { optimize } from './optimize';
 
 const files = import.meta.glob('./pages/*.html', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
@@ -23,7 +24,8 @@ function parseAttrs(src = ''): Record<string, string> {
   return attrs;
 }
 
-function parse(slug: string, html: string): SitePageData {
+function parse(slug: string, source: string): SitePageData {
+  const html = optimize(source);
   const htmlTag = html.match(/<html\b([^>]*)>/i);
   const headM = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i);
   const bodyM = html.match(/<body\b([^>]*)>([\s\S]*)<\/body>/i);

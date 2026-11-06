@@ -10,7 +10,7 @@
 //
 // Safe to re-run: existing asset files are skipped, pages are overwritten.
 
-import { mkdir, writeFile, readFile, stat } from 'node:fs/promises';
+import { mkdir, writeFile, stat } from 'node:fs/promises';
 import { dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
