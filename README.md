@@ -101,6 +101,24 @@ Keyboard: Space/K, ←/→, M, F.
 into web-ready MP4s and poster frames in `public/media/video/`, using macOS's
 built-in `avconvert` (no ffmpeg needed).
 
+## Analytics
+
+Google Analytics 4 (property "ikeriza", stream "Portfolio", `G-WQ92F84BL4`,
+Google account hello@ikeriza.com) and Ahrefs Web Analytics. Both load only on
+`ikeriza.com` hosts, so local builds and Vercel previews never send data.
+
+Every page sets a content group (`home`, `project`, `about`, `not_found`) from
+the `pageType` prop on `layouts/Base.astro`. Besides GA's automatic page views,
+scrolls and outbound clicks, `src/scripts/analytics.ts` sends:
+
+| Event | When | Parameters |
+|---|---|---|
+| `contact_click` (key event) | Email, LinkedIn or Instagram link clicked | `method`, `link_location` |
+| `select_content` | A project opened from the home list or a Next link | `content_type`, `item_id`, `link_location`, `index` |
+| `video_start` / `video_progress` / `video_complete` | The site's video player (25/50/75/100%) | `video_title`, `video_percent`, `video_duration` |
+| `model_interact` | First drag of a 3D model | `model` |
+| `page_not_found` | A 404 page is shown | `page_path`, `page_referrer` |
+
 ## SEO
 
 - Every page has a title, description, canonical URL, share image and JSON-LD

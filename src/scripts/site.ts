@@ -1,6 +1,10 @@
 // Site-wide behaviour. Heavier pieces (Lottie, 3D, video player) load only on
 // pages that use them.
 
+import { init as initAnalytics } from './analytics';
+
+initAnalytics();
+
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ---- Navbar: hide when scrolling down, show when scrolling up -------------

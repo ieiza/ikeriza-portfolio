@@ -6,6 +6,8 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
+  /** Analytics content group: home | project | about | not_found. */
+  pageType: 'home' | 'project' | 'about' | 'not_found';
   description?: string;
   ogImage?: string;
   /** Hide the footer (used by the 404 page). */
@@ -20,7 +22,7 @@ const DEFAULT_DESCRIPTION =
   'Iker Iza is a New York creative director and designer: brand identity, packaging, websites, apps and campaigns for hospitality, CPG, finance, tech and more.';
 const DEFAULT_OG_IMAGE = '/media/og/home.jpg'; // share images: npm run og
 
-const { title, description = DEFAULT_DESCRIPTION, ogImage = DEFAULT_OG_IMAGE, bare = false, schema, noindex = false } = Astro.props;
+const { title, pageType, description = DEFAULT_DESCRIPTION, ogImage = DEFAULT_OG_IMAGE, bare = false, schema, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
 const ogImageUrl = new URL(ogImage, Astro.site);
 const isProd = import.meta.env.PROD;
@@ -43,7 +45,7 @@ const website = { '@type': 'WebSite', '@id': `${siteUrl}#website`, url: siteUrl,
 const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [person, website, ...(schema ? [schema].flat() : [])] });
 ---
 <!doctype html>
-<html lang="en-US">
+<html lang="en-US" data-page-type={pageType}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -74,14 +76,26 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [per
 
     {isProd && (
       <>
-        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WQ92F84BL4"></script>
         <script is:inline>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() { dataLayer.push(arguments); }
-          gtag('js', new Date());
-          gtag('config', 'G-WQ92F84BL4');
+          // Analytics (Google Analytics 4 + Ahrefs) only on the real domain, so previews and local builds don't skew the data.
+          if (/(^|\.)ikeriza\.com$/.test(location.hostname)) {
+            const s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-WQ92F84BL4';
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { dataLayer.push(arguments); };
+            gtag('js', new Date());
+            gtag('config', 'G-WQ92F84BL4', { content_group: document.documentElement.dataset.pageType });
+
+            // Ahrefs Web Analytics (cookieless).
+            const a = document.createElement('script');
+            a.async = true;
+            a.src = 'https://analytics.ahrefs.com/analytics.js';
+            a.dataset.key = 'z8gFJ2JlZxTLvbpSDAxfyw';
+            document.head.appendChild(a);
+          }
         </script>
-        <script is:inline async src="https://analytics.ahrefs.com/analytics.js" data-key="z8gFJ2JlZxTLvbpSDAxfyw"></script>
       </>
     )}
     <script is:inline type="application/ld+json" set:html={jsonLd} />
