@@ -10,6 +10,7 @@ heroTitle: |
   where
 hero:
   image: "/media/6882a38fab96007eea328a1f_BS-Siempre-Photo-01.jpg"
+  alt: "Black and white campaign photo of a man's shadow on a wall beside a suited arm, for Sabadell Everywhere"
 heading: "Digital Banking as close as it gets"
 creditsHeading: "Details"
 credits: |
@@ -25,10 +26,13 @@ rows:
   - columns: 1
     items:
       - image: "/media/6882a3aab614e945c1ef1e53_BS-Siempre-General-mockup-03.jpg"
+        alt: "Sabadell Everywhere hoarding by a car park with a walking-legs photo and the line Your bank wherever you are"
   - columns: 2
     items:
       - image: "/media/6882a3aacbeb6c8c3b4da97a_BS-Siempre-General-mockup-01.jpg"
+        alt: "Sabadell Everywhere outdoor sign on posts beside tall cypress trees, showing a shadow figure and app message"
       - image: "/media/6882a3aae317bef69bd088f8_BS-Siempre-General-mockup-02.jpg"
+        alt: "Sabadell Everywhere building-wrap billboard with a man and his shadow seen from above, BS logo below"
   - columns: 2
     items:
       - video: "/media/6882a52b4f2f82cc4f53fe48_Walking-20Man-s-20Shadow-20July-206-202025-transcode.mp4"
@@ -36,36 +40,49 @@ rows:
   - columns: 1
     items:
       - image: "/media/6882a3aa7be57b1f90252698_BS-Siempre-General-mockup-04.jpg"
+        alt: "Wide Sabadell Everywhere wall billboard pairing a shadow-man photo with the headline and app download note"
   - columns: 3
     items:
       - image: "/media/6882a39075284e672459c4d7_BS-Siempre-Photo-02.jpg"
+        alt: "Black and white campaign photo of a man's legs mid-stride casting a long shadow, Sabadell Everywhere"
       - image: "/media/6882a390f5e278e7787438a7_BS-Siempre-Photo-03.jpg"
+        alt: "Sabadell Everywhere campaign photo of a man walking beside a wall with his shadow facing him"
       - image: "/media/6882a390df22e2a0218c0d40_BS-Siempre-Photo-04.jpg"
+        alt: "Overhead black and white photo of two men walking with long shadows, Sabadell Everywhere campaign"
   - columns: 1
     items:
       - video: "/media/6882a5e075284e67245acc40_Shadow-20Play-20July-207-202025-transcode.mp4"
   - columns: 1
     items:
       - image: "/media/6882a3aa7cc0903d93a96da8_BS-Siempre-Hor-mockup-01.jpg"
+        alt: "Subway billboard reading Being there with you, so we can be there for you, with a man facing his shadow"
   - columns: 2
     items:
       - image: "/media/6882a3aa54085b02743e2d7f_BS-Siempre-Opi-mockup-06.jpg"
+        alt: "Sabadell Everywhere digital kiosk screen in a station showing walking legs and the app message"
       - image: "/media/6882a3aab614e945c1ef1e31_BS-Siempre-Opi-mockup-07.jpg"
+        alt: "Sabadell Everywhere lightbox poster on a pillar showing a man from above with his long shadow"
   - columns: 1
     items:
       - video: "/media/6882a6c217f33c953e2f2528_BS-Siempre-vid-01-transcode.mp4"
   - columns: 1
     items:
       - image: "/media/6882a3aa3bcf04ba47edc251_BS-Siempre-Marca-mockup-01.jpg"
+        alt: "Wall poster reading Being inside your bank, while being outside your bank, with BS logo and Sabadell Everywhere"
   - columns: 3
     items:
       - image: "/media/6882a38f379a841c65ca2ff0_BS-Siempre-Photo-05.jpg"
+        alt: "Overhead photo of a man in black stepping forward with a large stretched shadow, Sabadell Everywhere"
       - image: "/media/6882a38fab96007eea328a1f_BS-Siempre-Photo-01.jpg"
+        alt: "Black and white campaign photo of a man's shadow on a wall beside a suited arm, for Sabadell Everywhere"
       - image: "/media/6882a3901c263bbf3ed31978_BS-Siempre-Photo-06.jpg"
+        alt: "Sabadell Everywhere campaign photo of a suited man in a white corner looking at his own shadow on the wall"
   - columns: 2
     items:
       - image: "/media/6882a3aa4f0c4a3c25b9b33b_BS-Siempre-Opi-mockup-05.jpg"
+        alt: "Bus shelter poster reading Having all the answers you need, right there when you need it, for Sabadell Everywhere"
       - image: "/media/6882a3aa29341fb6c7a67f04_BS-Siempre-Opi-mockup-04.jpg"
+        alt: "Tower billboard reading Searching for one of our branches, and finding out you are already there, Sabadell Everywhere"
 ---
 
 The "Sabadell Everywhere" campaign was launched to mark a new era of digital banking for Bank Sabadell, redefining client interaction.

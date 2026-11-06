@@ -106,6 +106,9 @@ a {
   text-decoration: none;
 }
 
+/* <picture> only chooses the file; layout and styling apply to the <img>. */
+picture { display: contents; }
+
 img {
   display: block;
   width: 100%;
@@ -284,7 +287,7 @@ main:focus { outline: none; }
   margin: 0.75rem 0.75rem 0;
   overflow: hidden;
 }
-.project-hero__media > img,
+.project-hero__media img,
 .project-hero__media > .bg-video { opacity: 0.75; }
 .project-hero__title {
   position: relative;
@@ -321,7 +324,7 @@ main:focus { outline: none; }
   min-width: 0;
   overflow: clip;
 }
-.media-cell--contain > img { width: 100%; height: 100%; object-fit: scale-down; }
+.media-cell--contain img { width: 100%; height: 100%; object-fit: scale-down; }
 .media-cell--vertical { padding: 1.4em; }
 .media-cell--vertical .bg-video { width: 75%; height: 80%; }
 .media-cell > .lottie { width: 100%; height: 100%; }

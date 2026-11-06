@@ -1,9 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Picture from '../components/Picture.astro';
-import { Content, frontmatter } from '../content/about.md';
+import { frontmatter, rawContent } from '../content/about.md';
+
+// One paragraph with blank lines between the parts, so the two columns balance like the original.
+const paragraphs = rawContent().trim().split(/\n\s*\n/).map((p) => p.replace(/\s+/g, ' ').trim());
 ---
-<Base title={frontmatter.title} description={frontmatter.description} ogImage={frontmatter.ogImage}>
+<Base title={frontmatter.title} description={frontmatter.description} ogImage="/media/og/about.jpg">
   <section class="project-hero">
     <div class="project-hero__media">
       <Picture src={frontmatter.image} alt="Iker Iza" sizes="100vw" eager />
@@ -14,7 +17,9 @@ import { Content, frontmatter } from '../content/about.md';
   <section class="details">
     <div class="details__column details__column--wide">
       <h2 class="details__heading">{frontmatter.heading}</h2>
-      <div class="details__text details__text--columns"><Content /></div>
+      <div class="details__text">
+        <p class="details__text--columns">{paragraphs.map((p, i) => <>{i > 0 && <><br /><br /></>}{p}</>)}</p>
+      </div>
     </div>
   </section>
 

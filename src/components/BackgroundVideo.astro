@@ -11,7 +11,7 @@ interface Props {
   class?: string;
 }
 const { src, eager = false, filter, class: className } = Astro.props;
-const { mp4, webm, poster } = videoSources(src);
+const { mp4, poster } = videoSources(src);
 ---
 <div class:list={['bg-video', className]} style={filter ? `filter:${filter}` : undefined}>
   <video
@@ -25,8 +25,6 @@ const { mp4, webm, poster } = videoSources(src);
     data-bg-video={eager ? 'eager' : ''}
     poster={eager ? poster : undefined}
     data-poster={eager ? undefined : poster}
-  >
-    <source src={mp4} type="video/mp4" />
-    {webm && <source src={webm} type="video/webm" />}
-  </video>
+    src={mp4}
+  ></video>
 </div>

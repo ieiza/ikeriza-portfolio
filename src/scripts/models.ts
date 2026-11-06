@@ -1,6 +1,9 @@
 // 3D models via <model-viewer>. The home page logo fades in when in view and
 // plays its animation at a cycle of speeds.
-import '@google/model-viewer';
+import { ModelViewerElement } from '@google/model-viewer';
+
+// Models are Draco-compressed; serve the decoder ourselves instead of from Google's CDN.
+(ModelViewerElement as unknown as { dracoDecoderLocation: string }).dracoDecoderLocation = '/media/draco/';
 
 type ModelViewer = HTMLElement & {
   timeScale: number;

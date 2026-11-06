@@ -2,7 +2,7 @@
 import type { Item } from '../content.config';
 import Picture from './Picture.astro';
 import BackgroundVideo from './BackgroundVideo.astro';
-import { sizesFor } from '../lib/media';
+import { sizesFor, imageSet, assertPublicFile } from '../lib/media';
 
 interface Props {
   item: Item;
@@ -25,19 +25,32 @@ const classes = [
 
   {'video' in item && <BackgroundVideo src={item.video} filter={item.filter} />}
 
-  {'lottie' in item && <div class="lottie" data-lottie={item.lottie} data-lottie-loop aria-hidden="true"></div>}
+  {'lottie' in item && <div class="lottie" data-lottie={assertPublicFile(item.lottie)} data-lottie-loop aria-hidden="true"></div>}
 
   {'slides' in item && (
-    <div class="slideshow" data-slideshow aria-roledescription="slideshow">
-      {item.slides.map((src, i) => (
-        <img src={src} alt="" loading="lazy" decoding="async" class:list={[i === 0 && 'is-current']} />
-      ))}
+    <div class="slideshow" data-slideshow role="img" aria-label={item.alt || undefined} aria-roledescription="slideshow">
+      {item.slides.map((src, i) => {
+        const set = imageSet(src, 800);
+        return (
+          <img
+            src={set.src}
+            srcset={set.webpSrcset}
+            sizes={set.webpSrcset ? sizes : undefined}
+            width={set.width}
+            height={set.height}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            class:list={[i === 0 && 'is-current']}
+          />
+        );
+      })}
     </div>
   )}
 
   {'model' in item && (
     <model-viewer
-      src={item.model}
+      src={assertPublicFile(item.model)}
       camera-controls
       touch-action="pan-y"
       auto-rotate

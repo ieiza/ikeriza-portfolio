@@ -8,7 +8,8 @@
 // so no ffmpeg install is needed. Sources live in the shared assets folder.
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, statSync, rmSync } from 'node:fs';
+import sharp from 'sharp';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -29,14 +30,17 @@ mkdirSync(OUT, { recursive: true });
 for (const [name, { src, poster }] of Object.entries(VIDEOS)) {
   const input = join(ASSETS, src);
   const mp4 = join(OUT, `${name}.mp4`);
-  const jpg = join(OUT, `${name}.jpg`);
+  const webp = join(OUT, `${name}.webp`);
   if (!existsSync(input)) { console.warn(`missing source for ${name}: ${input}`); continue; }
   if (force || !existsSync(mp4)) {
     // Preset1920x1080 = H.264/AAC, fast-start (moov atom first) so playback starts while downloading.
     execFileSync('avconvert', ['-s', input, '-p', 'Preset1920x1080', '-o', mp4, '--replace'], { stdio: 'ignore' });
   }
-  if (force || !existsSync(jpg)) {
+  if (force || !existsSync(webp)) {
+    const jpg = join(OUT, `${name}.jpg`);
     execFileSync('swift', [join(ROOT, 'scripts/poster-frame.swift'), mp4, jpg, String(poster), '1600'], { stdio: 'ignore' });
+    await sharp(jpg).webp({ quality: 80 }).toFile(webp);
+    rmSync(jpg);
   }
-  console.log(`${name}: ${(statSync(mp4).size / 1e6).toFixed(1)} MB video, ${(statSync(jpg).size / 1e3).toFixed(0)} KB poster`);
+  console.log(`${name}: ${(statSync(mp4).size / 1e6).toFixed(1)} MB video, ${(statSync(webp).size / 1e3).toFixed(0)} KB poster`);
 }
