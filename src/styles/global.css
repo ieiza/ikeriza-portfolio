@@ -208,7 +208,6 @@ main:focus { outline: none; }
   display: block;
   padding: 4px 0;
   font-size: inherit;
-  overflow: hidden;
 }
 .nav-logo__animation {
   width: 10vw;
@@ -347,10 +346,12 @@ main:focus { outline: none; }
 }
 
 /* Slideshow */
+/* Shown at phone size (the slides are Instagram stories), centred with room above and below. */
 .slideshow {
   position: relative;
-  width: 100%;
-  height: 100%;
+  height: 84%;
+  max-width: 90%;
+  aspect-ratio: 9 / 16;
   overflow: hidden;
 }
 .slideshow > img {

@@ -31,6 +31,7 @@ const item = z.union([
     /** Images shown as an auto-advancing slideshow. */
     slides: z.array(path).min(2),
     alt: z.string().default(''),
+    background: z.string().optional(),
   }).strict(),
   z.object({
     /** 3D model (.glb) shown with <model-viewer>. */
