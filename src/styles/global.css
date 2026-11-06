@@ -483,6 +483,7 @@ main:focus { outline: none; }
   .home-hero__model { position: relative; }
   .details { flex-direction: column; gap: 2rem; padding: 2rem 0; }
   .details__column { gap: 1rem; }
+  .details__column--wide { gap: 2.5rem; } /* About keeps its larger gap, as on the original */
   .details__text--columns { column-count: 1; }
 }
 
