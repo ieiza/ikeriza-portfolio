@@ -85,7 +85,7 @@ rows:
         alt: "BeautyBio R45 Reversal phases and The Daily serum arranged in a pink gift box"
 ---
 
-In preparation for a major retail expansion, BeautyBio, a female-founded skincare brand, unified its 30+ product line under a cohesive design inspired by Neo-plasticism, reflecting its scientific roots and premium quality while restoring order and balance to Gen X and Millennial's everyday life.
+In preparation for a major retail expansion, BeautyBio, a female-founded skincare brand, unified its 30+ product line under a cohesive design inspired by Neo-plasticism, reflecting its scientific roots and premium quality while restoring order and balance to Gen X and Millennials' everyday life.
 
 The rebrand drove remarkable growth, with sales exceeding $50M in the first year and expanding BeautyBio’s global footprint to 400+ Sephora stores, Harrods, and Mecca.
 

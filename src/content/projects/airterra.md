@@ -82,4 +82,4 @@ AirTerra is redefining the supply chain, empowering retailers of all sizes to co
 
 By simplifying parcel shipping with greater capacity, transparency, and flexibility, AirTerra delivers faster and more reliable solutions while reducing costs for its clients. With its groundbreaking “point-to-point” network, AirTerra aggregates packages in major metros, ensuring swift and controlled cross-zone shipping.
 
-To support the brand’s revolutionary vision, we partnered with AirTerra from the ground up, crafting a visual identity digital presence, and billboards that boldly distinguishes it from traditional logistics companies.
+To support the brand’s revolutionary vision, we partnered with AirTerra from the ground up, crafting a visual identity, digital presence, and billboards that boldly distinguish it from traditional logistics companies.
