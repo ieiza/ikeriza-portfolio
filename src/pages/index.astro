@@ -27,16 +27,15 @@ const projects = await getProjects();
         min-camera-orbit="auto auto 5.00m"
         max-camera-orbit="auto auto 30.00m"
         min-field-of-view="30deg"
-        interaction-prompt="none"
       ></model-viewer>
     </div>
   </section>
 
   <nav class="project-list" aria-label="Projects">
-    {projects.map((p, i) => (
+    {projects.map((p) => (
       <a class="project-list__item" href={`/${p.id}`} data-project-item>
         <span class="project-list__cover">
-          <Picture src={p.data.cover} sizes="100vw" eager={i === 0} />
+          <Picture src={p.data.cover} sizes="100vw" />
         </span>
         <h2 class="display project-list__title">
           {titleLines(p.data.menuTitle).map((line, j) => <>{j > 0 && <br />}{line}</>)}

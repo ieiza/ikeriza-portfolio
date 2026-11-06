@@ -24,48 +24,62 @@ rows:
   - columns: 1
     items:
       - image: "/media/688d29fd2d34a8d9dd46b5b8_BS-Emp-Bboard-Account-Hor-mock-04.jpg"
+        alt: "Sabadell wide framed ad with a modernist building photo: 'Charting a new trajectory for your company's future'"
   - columns: 2
     items:
       - image: "/media/688d29fd0b89614954a499d0_BS-Emp-Bboard-Approach-ver-mock-03.jpg"
+        alt: "Framed Sabadell poster of angular building rooflines: 'Charting your company's future, with the new Enterprise Account'"
       - video: "/media/688d2a3f37563983303625bb_BS-Empresas-Video-cut-09-transcode.mp4"
   - columns: 1
     items:
       - image: "/media/688d29fdcc68447222280dac_BS-Emp-Bboard-Visual-Hor-sm-mock-02.jpg"
+        alt: "Sabadell billboard on a glass tower, stepped building photo: 'Visualize your financial ascent, with our new Enterprise Account'"
   - columns: 2
     items:
       - video: "/media/688d2a91c28923c13674e2af_BS-Empresas-Video-cut-04-transcode.mp4"
       - image: "/media/688d29fd0fe06c2b1af79f11_BS-Emp-Opi-Single-mock-01.jpg"
+        alt: "Sabadell wall poster of three tower blocks: 'Redefining your financial horizon', Enterprise Expansion Account"
   - columns: 1
     items:
       - image: "/media/688d29fd7ee8cd948738e604_BS-Emp-Opi-Triple-mock-03.jpg"
+        alt: "Three Sabadell posters with architectural photos: 'Unlocking your financial growth', 'Reshaping your financial outlook', 'Mapping your financial progress'"
   - columns: 2
     items:
       - image: "/media/688d29fef4e94b953d2fef62_BS-Emp-Press-mock-02.jpg"
+        alt: "Sabadell newspaper ad with a curved glass facade photo: 'Project your financial climb with our new Enterprise Expansion Account'"
       - video: "/media/688d2b347819f584377c6681_BS-Empresas-Video-cut-07-transcode.mp4"
   - columns: 2
     items:
       - video: "/media/688d2b423f6719c6c8500fb4_BS-Empresas-Video-cut-06-transcode.mp4"
       - image: "/media/688d29fe2b7960ffd3f6dd45_BS-Emp-Press-mock-01.jpg"
+        alt: "Sabadell newspaper ad on concrete with a glass building photo: 'Reshape your financial outlook'"
   - columns: 1
     items:
       - image: "/media/688d29fd0c02f884c86a9889_BS-Emp-Bboard-Cover-Hor-mock-05.jpg"
+        alt: "Sabadell rooftop billboard at dusk: 'Enterprise Account, a new approach to your financial ascent'"
   - columns: 1
     items:
       - image: "/media/688d29fd3032819fa844c6c7_BS-Emp-Bboard-Visual-Hor-md-mock-01.jpg"
+        alt: "Sabadell billboard with a glass building photo: 'Security, clarity, stability', Enterprise Account"
   - columns: 2
     items:
       - image: "/media/688d29fd7760b2ce1ea00c7f_BS-Emp-Bboard-Growth-Hor-sm-mockup-08.jpg"
+        alt: "Sabadell billboard on a glass tower with stepped buildings: 'Reach, scale, impact'"
       - video: "/media/688d2c0dfa378bef1b304072_BS-Empresas-Video-cut-08-transcode.mp4"
   - columns: 1
     items:
       - image: "/media/688d29fd690333d20e5e234c_BS-Emp-Bboard-Visual-Hor-sm-mock-01.jpg"
+        alt: "Sabadell billboard atop a glass skyscraper: 'Value, growth, profitability', Enterprise Expansion Account"
   - columns: 1
     items:
       - image: "/media/688d29fd8815531ec467215b_BS-Emp-Poster-Word-mock-02.jpg"
+        alt: "Three Sabadell posters on a slatted wall with building photos captioned Efficiency, Growth and Value"
   - columns: 2
     items:
       - image: "/media/688d29fdf4e94b953d2feeba_BS-Emp-Poster-Word-mock-01.jpg"
+        alt: "Sabadell metal-framed poster with a circular architectural photo captioned 'Control', Enterprise Expansion Account benefits"
       - image: "/media/688d2cc89dce27cfc5e09f2d_BS-Emp-Press-mock-07.jpg"
+        alt: "Seated woman holding a large Sabadell print ad with a circular building photo captioned 'Growth'"
   - columns: 2
     items:
       - video: "/media/688d2d46c28923c136758435_BS-Empresas-Video-cut-02-transcode.mp4"
@@ -73,6 +87,7 @@ rows:
   - columns: 1
     items:
       - image: "/media/688d29fd8f1be3bee9355e7c_BS-Emp-Bboard-Growth-Hor-sm-mockup-07.jpg"
+        alt: "Sabadell framed wall ad in a lobby: 'Enterprise Account from Bank Sabadell' beside a building photo"
 ---
 
 The campaign was created for Bank Sabadell's new Enterprise Account with a single, powerful message: "Charting a new trajectory for your company’s future."

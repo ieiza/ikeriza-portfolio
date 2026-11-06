@@ -4,6 +4,7 @@
 // with sound. The big controls are typeset in the heading font: "PLAY" and "II".
 // Behaviour lives in src/scripts/player.ts.
 import BackgroundVideo from './BackgroundVideo.astro';
+import { assertPublicFile } from '../lib/media';
 
 interface Props {
   src: string;
@@ -13,6 +14,8 @@ interface Props {
   background?: string;
 }
 const { src, poster, preview, title, background = '#000' } = Astro.props;
+assertPublicFile(src);
+if (poster) assertPublicFile(poster);
 ---
 <section class="player" style={`--player-bg:${background}`} data-player data-state="idle" aria-label={`Video: ${title}`}>
   <div class="player__frame" data-player-frame>

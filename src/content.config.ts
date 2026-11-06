@@ -30,6 +30,8 @@ const item = z.union([
   z.object({
     /** Images shown as an auto-advancing slideshow. */
     slides: z.array(path).min(2),
+    alt: z.string().default(''),
+    background: z.string().optional(),
   }).strict(),
   z.object({
     /** 3D model (.glb) shown with <model-viewer>. */
@@ -74,7 +76,7 @@ const projects = defineCollection({
     cover: path,
     heroTitle: z.string(),
     hero: z.union([
-      z.object({ image: path }).strict(),
+      z.object({ image: path, alt: z.string().default('') }).strict(),
       z.object({ video: path }).strict(),
     ]),
     /** Heading above the description (the body of this file). */

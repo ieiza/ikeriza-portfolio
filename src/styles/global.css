@@ -106,6 +106,9 @@ a {
   text-decoration: none;
 }
 
+/* <picture> only chooses the file; layout and styling apply to the <img>. */
+picture { display: contents; }
+
 img {
   display: block;
   width: 100%;
@@ -124,6 +127,24 @@ button {
 }
 
 :focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+main:focus { outline: none; }
 
 .visually-hidden {
   position: absolute;
@@ -183,17 +204,19 @@ button {
   transition: width 350ms cubic-bezier(0.34, 1.56, 0.64, 1); /* in: bounce */
 }
 
+/* Same height as an About/Contact label, so the logo centres on the words. */
 .nav-logo {
-  display: block;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+  height: var(--button-line);
   padding: 4px 0;
   font-size: inherit;
-  overflow: hidden;
 }
 .nav-logo__animation {
   width: 10vw;
   min-width: 150px;
   max-width: 200px;
-  margin-top: -0.75rem;
   aspect-ratio: 1500 / 180;
 }
 
@@ -266,7 +289,7 @@ button {
   margin: 0.75rem 0.75rem 0;
   overflow: hidden;
 }
-.project-hero__media > img,
+.project-hero__media img,
 .project-hero__media > .bg-video { opacity: 0.75; }
 .project-hero__title {
   position: relative;
@@ -303,7 +326,7 @@ button {
   min-width: 0;
   overflow: clip;
 }
-.media-cell--contain > img { width: 100%; height: 100%; object-fit: scale-down; }
+.media-cell--contain img { width: 100%; height: 100%; object-fit: scale-down; }
 .media-cell--vertical { padding: 1.4em; }
 .media-cell--vertical .bg-video { width: 75%; height: 80%; }
 .media-cell > .lottie { width: 100%; height: 100%; }
@@ -326,11 +349,17 @@ button {
 }
 
 /* Slideshow */
+/* Instagram stories shown in a phone-like frame (as on the original Webflow slider). */
+.media-cell--slides { --slides-margin: 40px; }
 .slideshow {
   position: relative;
-  width: 100%;
-  height: 100%;
+  height: calc(100% - 2 * var(--slides-margin));
+  max-width: calc(100% - 2 * var(--slides-margin));
+  aspect-ratio: 9 / 16;
   overflow: hidden;
+  border: 3px solid var(--black);
+  border-radius: 20px;
+  box-shadow: 3px 14px 18px rgb(0 0 0 / 20%);
 }
 .slideshow > img {
   position: absolute;
@@ -439,13 +468,12 @@ button {
 /* ---- Breakpoints -------------------------------------------------------- */
 
 @media (max-width: 991px) {
-  .nav-logo__animation { margin-top: -7px; }
   .navbar { padding-left: 2rem; padding-right: 2rem; }
   .contact__links { gap: 1rem; }
 }
 
 @media (max-width: 767px) {
-  .nav-logo__animation { margin-top: -6px; }
+  .media-cell--slides { --slides-margin: 32px; }
   .navbar { padding-left: 1rem; padding-right: 1rem; }
 }
 
@@ -453,7 +481,7 @@ button {
   :root { --gap: 0.5rem; }
   body { padding: var(--scale-8); }
   .page-nav a { color: var(--white); }
-  .nav-logo__animation { min-width: 110px; margin-top: -24px; }
+  .nav-logo__animation { min-width: 110px; }
   .navbar { padding-left: 0.25rem; padding-right: 0.25rem; }
   .nav-button { font-size: clamp(1rem, 7vw, 1.75rem); }
   .nav-button__label { font-size: clamp(1rem, 2vw, 1.35rem); }
@@ -462,6 +490,9 @@ button {
   .home-hero__model { position: relative; }
   .details { flex-direction: column; gap: 2rem; padding: 2rem 0; }
   .details__column { gap: 1rem; }
+  .media-cell--slides { --slides-margin: 12px; }
+  .slideshow { border-width: 1.5px; border-radius: 8px; }
+  .details__column--wide { gap: 2.5rem; } /* About keeps its larger gap, as on the original */
   .details__text--columns { column-count: 1; }
 }
 

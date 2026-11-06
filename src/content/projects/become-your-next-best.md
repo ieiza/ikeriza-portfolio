@@ -23,21 +23,29 @@ rows:
     items:
       - video: "/media/6806f35808453acf233324b6_EN-Logo-01-transcode.mp4"
       - image: "/media/6806f3dfb07b6de50619ca58_EN-App-02.jpg"
+        alt: "LearningVerse app icon in purple and yellow on an iPhone home screen, shown in a close-up mockup"
   - columns: 1
     items:
       - image: "/media/680710363d863821ff63f2d4_EN-Layout-Flat-05.jpg"
+        alt: "LearningVerse brand layout with logo, platform description and a black-and-white portrait framed by purple slashes"
   - columns: 2
     items:
       - image: "/media/6806f3ce86bda36e6bf93ddd_EN-Display-Ver-Single-05.jpg"
+        alt: "LearningVerse billboard 'Become your next best' with a portrait of a woman, black and yellow, on a city building"
       - image: "/media/6806fa11abed2d808699205a_EN-Pattern-01.png"
+        alt: "LearningVerse brand pattern of angular pink and orange-red slashes"
   - columns: 1
     items:
       - image: "/media/6806f3bcea1b73b097048a26_EN-Display-Hor-Double-01.jpg"
+        alt: "Two LearningVerse transit displays, green 'Your future at your finger tips' and purple 'Become your next best'"
   - columns: 3
     items:
       - image: "/media/6806fa1129e73c3d6522f9e2_EN-Pattern-02.png"
+        alt: "LearningVerse brand pattern of bold black angular shapes on yellow"
       - image: "/media/6806fa1199d2a11f1fc3ab55_EN-Pattern-03.png"
+        alt: "LearningVerse brand pattern of interlocking lime green slashes on teal"
       - image: "/media/6806fa11eb8e733e45d135d0_EN-Pattern-04.png"
+        alt: "LearningVerse brand pattern repeating the wordmark in lilac on orange-red"
   - columns: 2
     items:
       - video: "/media/6806fb4cdbfe54b13f03d024_EN-Video-Mid-03-red-transcode.mp4"
