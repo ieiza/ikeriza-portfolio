@@ -454,16 +454,21 @@ main:focus { outline: none; }
 
 /* ---- 404 ---------------------------------------------------------------- */
 
+/* Fills the window so "Back" and the message sit in its exact centre. */
 .not-found {
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
-  min-height: 80vh;
+  gap: 3.5rem; /* the heading's glyphs hang below its tight line box */
+  padding: var(--scale-24);
   text-align: center;
 }
-.not-found p { max-width: 30ch; }
+.not-found h1 { top: 0; }
+.not-found h1 a { color: inherit; font-size: inherit; }
+.not-found p { max-width: 30ch; margin: 0; }
 
 /* ---- Breakpoints -------------------------------------------------------- */
 
