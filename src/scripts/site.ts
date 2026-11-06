@@ -24,19 +24,26 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 }
 
 // ---- Background videos: load and play near the viewport, pause when away ----
+// With "reduce motion" on, they show their poster frame and don't play.
 {
   const videos = document.querySelectorAll<HTMLVideoElement>('video[data-bg-video]');
+  const showPoster = (v: HTMLVideoElement) => {
+    if (v.dataset.poster) { v.poster = v.dataset.poster; delete v.dataset.poster; }
+  };
+  if (reduceMotion) videos.forEach((v) => { v.autoplay = false; v.pause(); });
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       for (const { target, isIntersecting } of entries) {
         const v = target as HTMLVideoElement;
-        if (isIntersecting) v.play().catch(() => {});
-        else if (!v.paused) v.pause();
+        if (isIntersecting) {
+          showPoster(v);
+          if (!reduceMotion) v.play().catch(() => {});
+        } else if (!v.paused) v.pause();
       }
     }, { rootMargin: '300px 0px' });
     videos.forEach((v) => io.observe(v));
   } else {
-    videos.forEach((v) => { v.autoplay = true; v.load(); });
+    videos.forEach((v) => { showPoster(v); if (!reduceMotion) { v.autoplay = true; v.load(); } });
   }
 }
 

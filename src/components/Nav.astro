@@ -6,17 +6,57 @@ const isHome = Astro.url.pathname === '/';
     <span class="nav-button__label">About</span>
     <span class="nav-button__line" aria-hidden="true"></span>
   </a>
-  <a class="nav-logo" href="/" aria-label="Iker Iza, home" aria-current={isHome ? 'page' : undefined}>
-    <span
-      class="nav-logo__animation"
-      data-lottie="/media/670738a026c2f09fcab17aef_logo-lottie_00000.json"
-      data-lottie-hover
-      aria-hidden="true"
-      style="display:block"
-    ></span>
+  <a class="nav-logo" href="/" aria-label="Iker Iza, home" aria-current={isHome ? 'page' : undefined} data-logo>
+    <!-- 30-frame sprite built by scripts/build-logo-sprite.mjs; plays forward on hover, back on leave. -->
+    <span class="nav-logo__animation" aria-hidden="true"></span>
   </a>
   <a class="nav-button" href="#contact">
     <span class="nav-button__label">Contact</span>
     <span class="nav-button__line" aria-hidden="true"></span>
   </a>
 </nav>
+
+<style>
+  .nav-logo__animation {
+    display: block;
+    background: url('/media/logo-frame.webp') 0 0 / 100% auto no-repeat;
+  }
+  @media (hover: hover) {
+    .nav-logo__animation {
+      --frame: 0;
+      background-image: url('/media/logo-sprite.webp');
+      background-size: 100% 3000%; /* 30 frames */
+      background-position: 0 calc(var(--frame) / 29 * 100%);
+    }
+  }
+</style>
+
+<script>
+  const FRAMES = 30;
+  const FPS = 30;
+  const logo = document.querySelector<HTMLElement>('[data-logo]');
+  const el = logo?.querySelector<HTMLElement>('.nav-logo__animation');
+  if (logo && el && matchMedia('(hover: hover)').matches) {
+    let frame = 0;
+    let direction = 0;
+    let last = 0;
+    let raf = 0;
+    const tick = (t: number) => {
+      if (t - last >= 1000 / FPS) {
+        last = t;
+        frame = Math.min(FRAMES - 1, Math.max(0, frame + direction));
+        el.style.setProperty('--frame', String(frame));
+      }
+      const done = (direction > 0 && frame === FRAMES - 1) || (direction < 0 && frame === 0);
+      raf = done ? 0 : requestAnimationFrame(tick);
+    };
+    const play = (dir: number) => {
+      direction = dir;
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    logo.addEventListener('pointerenter', () => play(1));
+    logo.addEventListener('pointerleave', () => play(-1));
+    logo.addEventListener('focus', () => play(1));
+    logo.addEventListener('blur', () => play(-1));
+  }
+</script>

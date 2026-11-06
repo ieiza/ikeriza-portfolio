@@ -125,6 +125,24 @@ button {
 
 :focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
 
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+main:focus { outline: none; }
+
 .visually-hidden {
   position: absolute;
   width: 1px;

@@ -5,7 +5,7 @@ import Picture from '../components/Picture.astro';
 import BackgroundVideo from '../components/BackgroundVideo.astro';
 import MediaItem from '../components/MediaItem.astro';
 import VideoPlayer from '../components/VideoPlayer.astro';
-import { getProjects, nextProject, titleLines, type Project } from '../lib/projects';
+import { getProjects, nextProject, titleLines, excerpt, type Project } from '../lib/projects';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -20,8 +20,22 @@ const { project, next } = Astro.props;
 const { data } = project;
 const { Content } = await render(project);
 const creditGroups = data.credits.trim().split(/\n\s*\n/).map((g) => g.split('\n'));
+
+const name = titleLines(data.menuTitle).join('');
+const pageTitle = /iker iza/i.test(data.title) ? data.title : `${data.title} | Iker Iza`;
+const description = data.description ?? excerpt(project.body ?? '');
+const ogImage = data.ogImage ?? ('image' in data.hero ? data.hero.image : data.cover);
+const schema = {
+  '@type': 'CreativeWork',
+  name,
+  headline: data.heading,
+  description,
+  image: new URL(ogImage, Astro.site).href,
+  url: new URL(`/${project.id}`, Astro.site).href,
+  creator: { '@id': new URL('/#person', Astro.site).href },
+};
 ---
-<Base title={data.title} description={data.description} ogImage={data.ogImage ?? ('image' in data.hero ? data.hero.image : data.cover)}>
+<Base title={pageTitle} description={description} ogImage={ogImage} schema={schema}>
   <section class="project-hero">
     <div class="project-hero__media">
       {'image' in data.hero
