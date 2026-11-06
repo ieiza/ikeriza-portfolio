@@ -1,5 +1,7 @@
 ---
 title: "Acumen"
+seoTitle: "Acumen Website Design — Impact Investing | Iker Iza"
+description: "Website design and development for Acumen, the global impact investing pioneer, built at 360 Design NYC in 2022 to share its mission and programs."
 order: 6
 menuTitle: "Acumen"
 cover: "/media/673cf19bab535bdebe8fa0b4_US-AID-Photo-1600x1100.webp"

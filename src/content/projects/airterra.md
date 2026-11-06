@@ -1,5 +1,7 @@
 ---
 title: "AirTerra"
+seoTitle: "AirTerra Brand Identity & Website — Logistics | Iker Iza"
+description: "Brand identity, website, animation and billboards for AirTerra, a parcel-shipping network helping retailers compete in ecommerce. 360 Design NYC, 2022."
 order: 14
 menuTitle: |
   Air

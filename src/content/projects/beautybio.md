@@ -1,5 +1,7 @@
 ---
 title: "BeautyBio"
+seoTitle: "BeautyBio Packaging Design — Skincare | Iker Iza"
+description: "Packaging design that unified BeautyBio’s 30+ skincare products ahead of its Sephora expansion; sales passed $50M in the first year. QNY Creative, 2017."
 order: 4
 menuTitle: "Beauty Bio"
 cover: "/media/670802677397a0b751afce57_38792284_1941239509271591_7502366150407867909_n.webp"

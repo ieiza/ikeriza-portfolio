@@ -1,5 +1,7 @@
 ---
 title: "Ojo Sr"
+seoTitle: "Ojo Señor — Street Art with LED Eyes | Iker Iza"
+description: "Ojo Señor, a personal street-art project: wheat-pasted posters with glowing LED eyes that turn a city’s dark corners surreal. Barcelona, ongoing."
 order: 15
 menuTitle: "Ojo Sr."
 cover: "/media/671f9e37a242b74eed28bdff_MV5BMDEzNGFiYmUtMDlhOS00YWY4LThkY2ItOGUzOTEzZDQwOTI2XkEyXkFqcGc._V1_.webp"

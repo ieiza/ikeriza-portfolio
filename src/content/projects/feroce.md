@@ -1,5 +1,7 @@
 ---
 title: "Feroce"
+seoTitle: "Feroce Ristorante Brand Identity — TAO Group | Iker Iza"
+description: "Brand identity for TAO Group’s Feroce Ristorante and Feroce Caffè in New York: logo, menus, business cards and loyalty cards. QNY Creative, 2016."
 order: 11
 menuTitle: "Feroce"
 cover: "/media/67305a311acb7fad9e1f2ac1_FE-hero-01.webp"
@@ -129,4 +131,4 @@ rows:
         alt: "Four Feroce cocktails with orange peel garnishes on scalloped coasters at the bar"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.
+Feroce is TAO Group’s ristorante and caffè at the Moxy hotel in New York. We created its brand identity: an F monogram and wordmark, and a visual system in deep green, cream and tan that carries from the restaurant’s embossed leather menus and business cards to the Feroce Caffè logo and loyalty cards.

@@ -6,7 +6,7 @@ import { frontmatter, rawContent } from '../content/about.md';
 // One paragraph with blank lines between the parts, so the two columns balance like the original.
 const paragraphs = rawContent().trim().split(/\n\s*\n/).map((p) => p.replace(/\s+/g, ' ').trim());
 ---
-<Base title={frontmatter.title} description={frontmatter.description} ogImage="/media/og/about.jpg">
+<Base schema={{ '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Work', item: new URL('/', Astro.site).href }, { '@type': 'ListItem', position: 2, name: 'About', item: new URL('/about', Astro.site).href }] }} title={frontmatter.title} description={frontmatter.description} ogImage="/media/og/about.jpg">
   <section class="project-hero">
     <div class="project-hero__media">
       <Picture src={frontmatter.image} alt="Iker Iza" sizes="100vw" eager />

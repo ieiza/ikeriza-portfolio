@@ -1,5 +1,7 @@
 ---
 title: "Hungry House - An \"Anti-Ghost Kitchen\" Ghost Kitchen"
+seoTitle: "Hungry House Branding — Ghost Kitchen NYC | Iker Iza"
+description: "Brand identity, photography and website for Hungry House, an “anti-ghost kitchen” delivery brand that puts chefs’ stories first. Home NYC, 2022."
 order: 2
 menuTitle: "Hungry House"
 cover: "/media/670803fc69a199e58641c714_02d7b1c044add4c2363453b4cf77e7bc_HH-Cover-01.webp"

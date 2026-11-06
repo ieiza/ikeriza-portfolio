@@ -1,5 +1,7 @@
 ---
 title: "Entity - Become Your Next Best"
+seoTitle: "Entity Brand Identity & App Design — EdTech | Iker Iza"
+description: "Brand identity, campaign and app design for Entity, a career-growth learning platform for women and diverse professionals. 360 Design NYC, 2021."
 ogImage: "/media/6806f3bcea1b73b097048a26_EN-Display-Hor-Double-01.jpg"
 order: 1
 menuTitle: "Entity"

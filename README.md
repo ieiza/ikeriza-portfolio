@@ -40,8 +40,9 @@ Each project is a Markdown file in `src/content/projects/`. The text below the
 `---` block is the description; everything else is in the front matter:
 
 ```yaml
-title: "Acumen"                 # browser tab / search title
-description: "…"                # optional search & share text
+title: "Acumen"                 # project name (structured data; fallback page title)
+seoTitle: "Acumen Website Design — Impact Investing | Iker Iza"  # search title, ≤ 60 chars
+description: "…"                # search & share text, ≤ 155 chars
 order: 6                        # position on the home page (also sets "Next")
 menuTitle: "Acumen"             # home page title; use a line break to split it
 cover: "/media/cover.jpg"       # full-screen image behind the home page title
@@ -99,6 +100,15 @@ Keyboard: Space/K, ←/→, M, F.
 `npm run videos` encodes the source files listed in `scripts/encode-videos.mjs`
 into web-ready MP4s and poster frames in `public/media/video/`, using macOS's
 built-in `avconvert` (no ffmpeg needed).
+
+## SEO
+
+- Every page has a title, description, canonical URL, share image and JSON-LD
+  (Person + WebSite everywhere; CreativeWork, BreadcrumbList and VideoObject on
+  projects). Project facts for structured data (disciplines, studio, year,
+  client) are read from the `credits` block, so keep its format.
+- `sitemap.xml` lists every page with its images (Google Images).
+- Google Search Console: domain property `ikeriza.com` (hello@ikeriza.com).
 
 ## Fonts
 

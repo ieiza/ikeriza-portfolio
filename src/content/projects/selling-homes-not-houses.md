@@ -1,5 +1,7 @@
 ---
 title: "Solvia - Selling Homes, Not Houses"
+seoTitle: "Solvia Real Estate Campaign — Bank Sabadell | Iker Iza"
+description: "Art direction and design for Solvia, Bank Sabadell’s real estate agency: a campaign of minimalist house illustrations about fleeting opportunities. 2013."
 ogImage: "/media/686c88b0d20c2c0ea252680e_BS-Sol-Mural-02.jpg"
 order: 10
 menuTitle: "Solvia"

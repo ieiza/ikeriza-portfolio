@@ -1,5 +1,7 @@
 ---
 title: "Fleur Room"
+seoTitle: "The Fleur Room Brand Identity — NYC Nightlife | Iker Iza"
+description: "Brand identity for The Fleur Room, TAO Group’s floral-inspired lounge at Moxy Chelsea in NYC’s Flower District. QNY Creative, 2016."
 order: 7
 menuTitle: "Fleur Room"
 cover: "/media/671fb167a8f1d5358c44a02f_Screenshot-202024-10-28-20at-2011.43.30-E2-80-AFAM.webp"
